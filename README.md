@@ -1,5 +1,5 @@
 <div align="center">
-<img width="1774" height="887" alt="d5eb369d-b4fa-4c58-bf47-21f30e4409ef" src="https://github.com/user-attachments/assets/bcd87eff-b189-486b-8274-6a904f5aaae1" />
+<img width="1672" height="941" alt="ChatGPT Image Jun 4, 2026, 08_36_32 PM" src="https://github.com/user-attachments/assets/be61952b-6070-43c6-ac69-3e157a8cd0b8" />
 
 # 🏭 Sneki
 
@@ -13,10 +13,6 @@ A Java-based system for managing raw materials, products, warehouse inventory, a
 
 </div>
 
-<p align="center">
-  <img width="500" height="673" alt="ezgif com-optiwebp" src="https://github.com/user-attachments/assets/48233380-cd63-4c38-8c2a-d95e03e7e2f1" />
-
-</p>
 ---
 
 ## ✨ Features
