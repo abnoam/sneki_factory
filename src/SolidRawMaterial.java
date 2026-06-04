@@ -1,6 +1,7 @@
 import java.util.Date;
 
-public class SolidRawMaterial extends RawMaterial{
+public class SolidRawMaterial extends RawMaterial
+{
     private double weightInKg;
     private String palletArrangement;
 
