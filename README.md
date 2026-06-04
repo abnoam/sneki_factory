@@ -1,17 +1,51 @@
 <div align="center">
-<img width="1672" height="941" alt="ChatGPT Image Jun 4, 2026, 08_36_32 PM" src="https://github.com/user-attachments/assets/be61952b-6070-43c6-ac69-3e157a8cd0b8" />
 
 # 🏭 Sneki
 
 ### Food Factory Inventory & Order Management System
 
-A Java-based system for managing raw materials, products, warehouse inventory, and customer orders.
-
-![Java](https://img.shields.io/badge/Java-17+-orange)
-![OOP](https://img.shields.io/badge/OOP-Project-blue)
-![Status](https://img.shields.io/badge/Status-In%20Development-green)
-
 </div>
+
+<p align="center">
+  <img width="1672" height="941" alt="ChatGPT Image Jun 4, 2026, 08_36_32 PM" src="https://github.com/user-attachments/assets/be61952b-6070-43c6-ac69-3e157a8cd0b8" />
+</p>
+
+---
+
+<table>
+<tr>
+
+<td width="60%" valign="top">
+
+## 📋 Overview
+
+Sneki is a Java-based system for managing raw materials, products, warehouse inventory, and customer orders in a food manufacturing factory.
+
+The project demonstrates core Object-Oriented Programming principles and data structures through a realistic factory management simulation.
+
+### 🛠 Built With
+
+- Java
+- Object-Oriented Programming
+- Java Collections Framework
+
+### 📚 Data Structures
+
+- Queue
+- Linked List
+- Binary Search Tree (BST)
+- ArrayList
+
+</td>
+
+<td width="40%" align="center">
+
+<img width="356" height="633" alt="ezgif com-optiwebp (1)" src="https://github.com/user-attachments/assets/c378ad93-5253-4f83-bda4-310d20f3d202" />
+
+</td>
+
+</tr>
+</table>
 
 ---
 
