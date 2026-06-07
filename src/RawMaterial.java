@@ -51,12 +51,10 @@ public abstract class RawMaterial implements Valuable
 
     public double calcFinalValue()      //calculate price of ALL units in stock
     {
-        return purchasePrice * quantityInStock;
+        return (purchasePrice * quantityInStock) * (1 + TAX_PERCENT);
     }
 
-    //67//
-    @Override
-    public double getBasePrice()
+    public double getBasePrice()        //returns price per unit
     {
         return purchasePrice;
     }

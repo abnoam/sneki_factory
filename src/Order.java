@@ -18,7 +18,8 @@ public class Order {
 
     public void addProduct(Product product)
     {
-        if (product != null) {
+        if (product != null)
+        {
             this.productsList.add(product);
         } else
         {

@@ -1,12 +1,10 @@
 public interface Valuable
 {
-    double TAX_PERCENT = 0.17;
+    double TAX_PERCENT = 0.18;
     string CURRENCY  = "ILS";
 
     // methods:
 
-
-    double getMarketValue();
     double calcFinalValue();
     double getBasePrice();
     double calcProfit(double targetProfitPercentage);

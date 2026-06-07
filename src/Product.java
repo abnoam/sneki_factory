@@ -111,11 +111,6 @@ public class Product implements Valuable
         return this.getProductionCost();
     }
 
-    public double getMarketValue()
-    {
-        double finalValue = this.calcFinalValue();
-        return finalValue = 1.2;
-    }
 
     public double calcProfit(double targetProfitPercentage)
     {
