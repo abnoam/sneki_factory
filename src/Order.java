@@ -20,7 +20,8 @@ public class Order {
     {
         if (product != null) {
             this.productsList.add(product);
-        } else {
+        } else
+        {
             System.out.println("Error: Cannot add a null product to the order.");
         }
     }

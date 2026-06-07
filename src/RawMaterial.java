@@ -16,9 +16,6 @@ public abstract class RawMaterial implements Valuable
         this.purchasePrice = purchasePrice;
     }
 
-    /**
-     * שימוש בכמות מסוימת של חומר גלם
-     */
     public boolean useMaterial(double amount)        //uses the material and updates the remaining quantity
     {
         if (amount <= 0)
@@ -43,21 +40,16 @@ public abstract class RawMaterial implements Valuable
         return quantityInStock;
     }
 
-    /**
-     * בדיקת תוקף
-     */
-    public boolean isExpired()
+    public boolean isExpired()      //checks expiration date
     {
         Date currentDate = new Date();
         return expirationDate.before(currentDate);
     }
 
-    /**
-     * מימוש הממשק Valuable
-     * שווי חומר הגלם = מחיר רכש * כמות במלאי
-     */
-    @Override
-    public double calcFinalValue()
+    //implementing valuable functions
+     //* שווי חומר הגלם = מחיר רכש * כמות במלאי
+
+    public double calcFinalValue()      //calculate price of ALL units in stock
     {
         return purchasePrice * quantityInStock;
     }
@@ -69,8 +61,7 @@ public abstract class RawMaterial implements Valuable
         return purchasePrice;
     }
 
-    @Override
-    public double calcProfit(double targetProfitPercentage)
+    public double calcProfit(double targetProfitPercentage) //calculates the desirable profit
     {
         return calcFinalValue() * (targetProfitPercentage / 100.0);
     }
@@ -117,7 +108,6 @@ public abstract class RawMaterial implements Valuable
         this.purchasePrice = purchasePrice;
     }
 
-    @Override
     public String toString()
     {
         return "RawMaterial{" +
