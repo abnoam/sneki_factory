@@ -1,3 +1,5 @@
+package baseClasses;
+
 import java.util.Date;
 
 public abstract class RawMaterial implements Valuable
@@ -108,7 +110,7 @@ public abstract class RawMaterial implements Valuable
 
     public String toString()
     {
-        return "RawMaterial{" +
+        return "baseClasses.RawMaterial{" +
                 "serialNumber=" + serialNumber +
                 ", quantityInStock=" + quantityInStock +
                 ", expirationDate=" + expirationDate +

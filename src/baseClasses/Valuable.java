@@ -1,7 +1,9 @@
+package baseClasses;
+
 public interface Valuable
 {
     double TAX_PERCENT = 0.18;
-    string CURRENCY  = "ILS";
+    String CURRENCY  = "ILS";
 
     // methods:
 

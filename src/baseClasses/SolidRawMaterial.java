@@ -1,3 +1,5 @@
+package baseClasses;
+
 import java.util.Date;
 
 public class SolidRawMaterial extends RawMaterial

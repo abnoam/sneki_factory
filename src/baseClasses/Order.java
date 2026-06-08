@@ -1,3 +1,5 @@
+package baseClasses;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Date;
@@ -8,14 +10,28 @@ public class Order {
     private ArrayList<Product> productsList;
     private int orderID;
 
+    /**
+     * Constructs a new baseClasses.Order instance.
+     * @param client The client who placed the order.
+     * @param orderDate The date the order was created.
+     * @param products A dataBase.LinkedList containing the products for the order.
+     * @param orderID id of the order.
+     */
     public Order(Client client, Date orderDate, LinkedList<Product> products, int orderID)
     {
         this.client = client;
         this.orderDate = orderDate;
         this.orderID = orderID;
         this.productsList = new ArrayList<Product>();
+     /*  if (products != null) {
+            this.productsList.addAll(products);
+        }*/
     }
 
+    /**
+     * Adds a single product to the order.
+     * @param product The product to be added.
+     */
     public void addProduct(Product product)
     {
         if (product != null)
@@ -23,22 +39,24 @@ public class Order {
             this.productsList.add(product);
         } else
         {
-            System.out.println("Error: Cannot add a null product to the order.");
+            throw new IllegalArgumentException("baseClasses.Product cannot be null.");
         }
     }
 
-
+    /**
+     * Generates and prints a detailed invoice.
+     * Calculates the subtotal, applies tax, and displays the total amount.
+     */
     public void generateInvoice()
     {
        System.out.println("========= INVOICE =========");
-       System.out.println("Order ID: " + this.getOrderId());
-       System.out.println("Order Date: " + this.getOrderDate());
+       System.out.println("baseClasses.Order ID: " + this.getOrderId());
+       System.out.println("baseClasses.Order Date: " + this.getOrderDate());
        System.out.println("Customer: " + this.getClient().getName());
        System.out.println("---------------------------");
 
        double subTotal = 0;
 
-       //add link logic
 
        for(Product p : this.productsList)
        {
@@ -90,7 +108,7 @@ public class Order {
 
     public String toString()
     {
-        return "Order #" + getOrderId() + " | Customer: " + getClient().getName() + " | Date: " + getOrderDate();
+        return "baseClasses.Order #" + getOrderId() + " | Customer: " + getClient().getName() + " | Date: " + getOrderDate();
     }
 
 }

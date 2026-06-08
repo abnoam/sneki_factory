@@ -1,3 +1,5 @@
+package baseClasses;
+
 import java.util.ArrayList;
 import java.util.Date;
 //67
@@ -10,32 +12,53 @@ public class Product implements Valuable
     private double weight;
     private ArrayList<RawMaterial> rawMaterials;
 
-
-    public Product(String name, double productionCost, Date expiryDate, double weight) // full constructor
+    /**
+     * Full constructor for a new Product
+     * @param name           The name of the product.
+     * @param productionCost The base cost to produce the item.
+     * @param expiryDate     The expiration date.
+     * @param weight         The weight of the product in kg.
+     * @param arr            An initial list of raw materials.
+     */
+    public Product(String name, double productionCost, Date expiryDate, double weight, ArrayList<RawMaterial> arr) // full constructor
     {
         this.name = name;
         this.productionCost = productionCost;
         this.expiryDate = expiryDate;
         this.weight = weight;
-        this.rawMaterials = new ArrayList<>(); // inits an empty list
+        this.rawMaterials = new ArrayList<>();
+        if (arr != null) {
+            this.rawMaterials.addAll(arr);
+        }
     }
 
-    
+    /**
+     * Minimal constructor for a new Product.
+     * @param name           The name of the product.
+     * @param productionCost The base cost to produce the item.
+     * @param weight         The weight of the product in kg.
+     */
     public Product(String name, double productionCost, double weight)
     {
         this.name = name;
         this.productionCost = productionCost;
         this.weight = weight;
-        this.expiryDate = new Date(); // gets today`s date
+        this.expiryDate = new Date(); // Defaults to current date
         this.rawMaterials = new ArrayList<>(); // inits an empty list
     }
-
+    /**
+     * Checks if the current product has passed its expiry date.
+     * @return true if expired, false otherwise.
+     */
     public boolean isExpired()
     {
         Date currentDay = new Date();
         return currentDay.after(this.expiryDate);
     }
-
+    /**
+     * Updates the weight of the product.
+     * @param newWeight The new weight (must be positive).
+     */
     public void updateWeight(double newWeight)
     {
         if(newWeight > 0)
@@ -43,7 +66,10 @@ public class Product implements Valuable
         else
             System.out.println("Error: weight must be greater than zero.");
     }
-
+    /**
+     * Adds a raw material to the product composition.
+     * @param material The material to add.
+     */
     public void addRawMaterial(RawMaterial material)
     {
         if(material != null)
@@ -97,13 +123,13 @@ public class Product implements Valuable
 
     public String toString()
     {
-        return "Product: " + getName() + " | Cost: " + getProductionCost() + CURRENCY + " | Weight: " + getWeight() + "kg | Expire: " + getExpiryDate();
+        return "baseClasses.Product: " + getName() + " | Cost: " + getProductionCost() + Valuable.CURRENCY + " | Weight: " + getWeight() + "kg | Expire: " + getExpiryDate();
     }
 
     // interface methods:
     public double calcFinalValue()
     {
-        return this.productionCost * (1 + TAX_PERCENT);
+        return this.productionCost * (1 + Valuable.TAX_PERCENT);
     }
 
     public double getBasePrice()
