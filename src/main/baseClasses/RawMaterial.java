@@ -1,8 +1,10 @@
-package baseClasses;
+package main.baseClasses;
+
+import main.dataBase.TreeIdentify;
 
 import java.util.Date;
 
-public abstract class RawMaterial implements Valuable
+public abstract class RawMaterial implements Valuable, TreeIdentify
 {
     private int serialNumber;
     private double quantityInStock;
@@ -108,9 +110,14 @@ public abstract class RawMaterial implements Valuable
         this.purchasePrice = purchasePrice;
     }
 
+    public int getTreeID()
+    {
+        return this.getSerialNumber();
+    }
+
     public String toString()
     {
-        return "baseClasses.RawMaterial{" +
+        return "main.baseClasses.RawMaterial{" +
                 "serialNumber=" + serialNumber +
                 ", quantityInStock=" + quantityInStock +
                 ", expirationDate=" + expirationDate +

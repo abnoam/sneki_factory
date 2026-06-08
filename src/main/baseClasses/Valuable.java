@@ -1,4 +1,4 @@
-package baseClasses;
+package main.baseClasses;
 
 public interface Valuable
 {

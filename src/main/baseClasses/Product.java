@@ -1,34 +1,42 @@
-package baseClasses;
+package main.baseClasses;
+import main.dataBase.LinkedList;
 
-import java.util.ArrayList;
 import java.util.Date;
-//67
-//noam 67
+
+
 public class Product implements Valuable
 {
     private String name;
     private double productionCost;
     private Date expiryDate;
     private double weight;
-    private ArrayList<RawMaterial> rawMaterials;
+    private LinkedList rawMaterials;
 
     /**
      * Full constructor for a new Product
-     * @param name           The name of the product.
-     * @param productionCost The base cost to produce the item.
-     * @param expiryDate     The expiration date.
-     * @param weight         The weight of the product in kg.
-     * @param arr            An initial list of raw materials.
+     * @param name              The name of the product.
+     * @param productionCost    The base cost to produce the item.
+     * @param expiryDate        The expiration date.
+     * @param weight            The weight of the product in kg.
+     * @param initialMaterials  An initial list of raw materials.
      */
-    public Product(String name, double productionCost, Date expiryDate, double weight, ArrayList<RawMaterial> arr) // full constructor
+    public Product(String name, double productionCost, Date expiryDate, double weight, RawMaterial[] initialMaterials) // full constructor
     {
         this.name = name;
         this.productionCost = productionCost;
         this.expiryDate = expiryDate;
         this.weight = weight;
-        this.rawMaterials = new ArrayList<>();
-        if (arr != null) {
-            this.rawMaterials.addAll(arr);
+        this.rawMaterials = new LinkedList();
+
+        if (initialMaterials != null)
+        {
+            for (RawMaterial material : initialMaterials)
+            {
+                if (material != null)
+                {
+                    this.rawMaterials.addLast(material);
+                }
+            }
         }
     }
 
@@ -44,7 +52,7 @@ public class Product implements Valuable
         this.productionCost = productionCost;
         this.weight = weight;
         this.expiryDate = new Date(); // Defaults to current date
-        this.rawMaterials = new ArrayList<>(); // inits an empty list
+        this.rawMaterials = new LinkedList(); // inits an empty list
     }
     /**
      * Checks if the current product has passed its expiry date.
@@ -73,7 +81,7 @@ public class Product implements Valuable
     public void addRawMaterial(RawMaterial material)
     {
         if(material != null)
-            this.rawMaterials.add((material));
+            this.rawMaterials.addLast(material);
     }
 
     public String getName()
@@ -90,8 +98,6 @@ public class Product implements Valuable
         return productionCost;
     }
 
-
-    //67//
     public void setProductionCost(double productionCost)
     {
         this.productionCost = productionCost;
@@ -116,14 +122,14 @@ public class Product implements Valuable
         this.weight = weight;
     }
 
-    public ArrayList<RawMaterial> getRawMaterials()
+    public LinkedList getRawMaterials()
     {
         return rawMaterials;
     }
 
     public String toString()
     {
-        return "baseClasses.Product: " + getName() + " | Cost: " + getProductionCost() + Valuable.CURRENCY + " | Weight: " + getWeight() + "kg | Expire: " + getExpiryDate();
+        return "main.baseClasses.Product: " + getName() + " | Cost: " + getProductionCost() + Valuable.CURRENCY + " | Weight: " + getWeight() + "kg | Expire: " + getExpiryDate();
     }
 
     // interface methods:

@@ -1,4 +1,4 @@
-package dataBase;
+package main.dataBase;
 
 public class LinkedNode
 {

@@ -1,4 +1,4 @@
-package baseClasses;
+package main.baseClasses;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -11,10 +11,10 @@ public class Order {
     private int orderID;
 
     /**
-     * Constructs a new baseClasses.Order instance.
+     * Constructs a new main.baseClasses.Order instance.
      * @param client The client who placed the order.
      * @param orderDate The date the order was created.
-     * @param products A dataBase.LinkedList containing the products for the order.
+     * @param products A main.dataBase.LinkedList containing the products for the order.
      * @param orderID id of the order.
      */
     public Order(Client client, Date orderDate, LinkedList<Product> products, int orderID)
@@ -39,7 +39,7 @@ public class Order {
             this.productsList.add(product);
         } else
         {
-            throw new IllegalArgumentException("baseClasses.Product cannot be null.");
+            throw new IllegalArgumentException("main.baseClasses.Product cannot be null.");
         }
     }
 
@@ -50,8 +50,8 @@ public class Order {
     public void generateInvoice()
     {
        System.out.println("========= INVOICE =========");
-       System.out.println("baseClasses.Order ID: " + this.getOrderId());
-       System.out.println("baseClasses.Order Date: " + this.getOrderDate());
+       System.out.println("main.baseClasses.Order ID: " + this.getOrderId());
+       System.out.println("main.baseClasses.Order Date: " + this.getOrderDate());
        System.out.println("Customer: " + this.getClient().getName());
        System.out.println("---------------------------");
 
@@ -108,7 +108,7 @@ public class Order {
 
     public String toString()
     {
-        return "baseClasses.Order #" + getOrderId() + " | Customer: " + getClient().getName() + " | Date: " + getOrderDate();
+        return "main.baseClasses.Order #" + getOrderId() + " | Customer: " + getClient().getName() + " | Date: " + getOrderDate();
     }
 
 }

@@ -1,9 +1,11 @@
-package baseClasses;
+package main.baseClasses;
+
+import main.dataBase.TreeIdentify;
 
 import java.util.Queue;
 import java.util.LinkedList;
 
-public class Client
+public class Client implements TreeIdentify
 {
     private int clientID;
     private String name;
@@ -60,8 +62,13 @@ public class Client
         return ordersQueue;
     }
 
+    public int getTreeID()
+    {
+        return this.getCliendID();
+    }
+
     public String toString()
     {
-        return "baseClasses.Client #" + getCliendID() + " | Name: " + getName() + " | Pending Orders: " + ordersQueue.size();
+        return "main.baseClasses.Client #" + getCliendID() + " | Name: " + getName() + " | Pending Orders: " + ordersQueue.size();
     }
 }

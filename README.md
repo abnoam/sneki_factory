@@ -2,7 +2,7 @@
 
 # 🏭 Sneki
 
-### Food Factory Inventory & baseClasses.Order Management System
+### Food Factory Inventory & main.baseClasses.Order Management System
 
 </div>
 
@@ -53,30 +53,30 @@ The project demonstrates core Object-Oriented Programming principles and data st
 
 - 📦 Inventory Management
 - 🥫 Raw Material Tracking
-- 🛒 Customer baseClasses.Order Processing
-- 🚚 baseClasses.Distributor Management
+- 🛒 Customer main.baseClasses.Order Processing
+- 🚚 main.baseClasses.Distributor Management
 - 📅 Expiration Date Monitoring
 - 💰 Profit & Value Calculations
 - 🌳 Binary Search Tree Inventory Storage
-- 🔄 Queue-Based baseClasses.Order Management
+- 🔄 Queue-Based main.baseClasses.Order Management
 
 ---
 
 ## 🏗️ Architecture
 
 ```text
-baseClasses.Client
- ├── baseClasses.Distributor
+main.baseClasses.Client
+ ├── main.baseClasses.Distributor
 
-baseClasses.RawMaterial (Abstract)
- ├── baseClasses.LiquidRawMaterial
- └── baseClasses.SolidRawMaterial
+main.baseClasses.RawMaterial (Abstract)
+ ├── main.baseClasses.LiquidRawMaterial
+ └── main.baseClasses.SolidRawMaterial
 
-baseClasses.Product
- └── baseClasses.RawMaterial List
+main.baseClasses.Product
+ └── main.baseClasses.RawMaterial List
 
-baseClasses.Order
- └── baseClasses.Product List
+main.baseClasses.Order
+ └── main.baseClasses.Product List
 ```
 
 ---
@@ -96,15 +96,15 @@ baseClasses.Order
 
 ```text
 src/
-├── Main.java
-├── baseClasses.Product.java
-├── baseClasses.Order.java
-├── baseClasses.Client.java
-├── baseClasses.Distributor.java
-├── baseClasses.RawMaterial.java
-├── baseClasses.LiquidRawMaterial.java
-├── baseClasses.SolidRawMaterial.java
-└── baseClasses.Valuable.java
+├── main.Main.java
+├── main.baseClasses.Product.java
+├── main.baseClasses.Order.java
+├── main.baseClasses.Client.java
+├── main.baseClasses.Distributor.java
+├── main.baseClasses.RawMaterial.java
+├── main.baseClasses.LiquidRawMaterial.java
+├── main.baseClasses.SolidRawMaterial.java
+└── main.baseClasses.Valuable.java
 ```
 
 ---

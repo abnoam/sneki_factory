@@ -1,4 +1,4 @@
-import java.util.Date;
+package main;
 
 public class Main
 {
