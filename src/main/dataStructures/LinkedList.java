@@ -1,4 +1,4 @@
-package main.dataBase;
+package main.dataStructures;
 
 public class LinkedList
 {
@@ -51,6 +51,11 @@ public class LinkedList
             first = first.getNext();
         }
         return ans;
+    }
+
+    public LinkedNode getFirst()
+    {
+        return first;
     }
 
     public Object getMiddle()

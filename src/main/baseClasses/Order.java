@@ -1,31 +1,28 @@
 package main.baseClasses;
+import main.dataStructures.LinkedList;
+import main.dataStructures.LinkedNode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Date;
 
 public class Order {
     private Client client;
     private Date orderDate;
-    private ArrayList<Product> productsList;
+    private LinkedList productsList;
     private int orderID;
 
     /**
      * Constructs a new main.baseClasses.Order instance.
      * @param client The client who placed the order.
      * @param orderDate The date the order was created.
-     * @param products A main.dataBase.LinkedList containing the products for the order.
      * @param orderID id of the order.
      */
-    public Order(Client client, Date orderDate, LinkedList<Product> products, int orderID)
+    public Order(Client client, Date orderDate, int orderID)
     {
         this.client = client;
         this.orderDate = orderDate;
         this.orderID = orderID;
-        this.productsList = new ArrayList<Product>();
-     /*  if (products != null) {
-            this.productsList.addAll(products);
-        }*/
+        this.productsList = new LinkedList();
+
     }
 
     /**
@@ -36,7 +33,7 @@ public class Order {
     {
         if (product != null)
         {
-            this.productsList.add(product);
+            this.productsList.addLast(product);
         } else
         {
             throw new IllegalArgumentException("main.baseClasses.Product cannot be null.");
@@ -57,21 +54,25 @@ public class Order {
 
        double subTotal = 0;
 
-
-       for(Product p : this.productsList)
+       LinkedNode current = this.productsList.getFirst();
+       while (current != null)
        {
-           System.out.println("- " + p.getName() + " (" + p.getWeight() + "kg): " + p.getBasePrice() + " " + Valuable.CURRENCY);
+           Product p = (Product) current.getData();
+
+           System.out.println("- " + p.getName() + " (" + p.getWeight() + "kg ): " + p.getBasePrice() + " " + Valuable.CURRENCY);
 
            subTotal += p.getBasePrice();
+           current = current.getNext();
        }
-       System.out.println("------------------------");
+
+       System.out.println("---------------------------");
        System.out.println("Subtotal = " + subTotal + " " + Valuable.CURRENCY);
         double taxAmount = subTotal * Valuable.TAX_PERCENT;
         System.out.println("VAT (" + (Valuable.TAX_PERCENT * 100) + "%): " + taxAmount + " " + Valuable.CURRENCY);
 
         double finalTotal = subTotal + taxAmount;
         System.out.println("TOTAL TO PAY: " + finalTotal + " " + Valuable.CURRENCY);
-        System.out.println("=============================");
+        System.out.println("===========================");
     }
 
     public int getOrderId()
@@ -92,7 +93,7 @@ public class Order {
         this.client = client;
     }
 
-    public ArrayList<Product> getProductsList()
+    public LinkedList getProductsList()
     {
         return productsList;
     }
@@ -108,7 +109,7 @@ public class Order {
 
     public String toString()
     {
-        return "main.baseClasses.Order #" + getOrderId() + " | Customer: " + getClient().getName() + " | Date: " + getOrderDate();
+        return "Order #" + getOrderId() + " | Customer: " + getClient().getName() + " | Date: " + getOrderDate();
     }
 
 }

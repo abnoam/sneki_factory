@@ -1,24 +1,25 @@
-package main.dataBase;
+package main.dataStructures;
+import main.baseClasses.Client;
 
 public class TreeNode
 {
-    private Object data;
+    private Client data;
     private TreeNode left;
     private TreeNode right;
 
-    public TreeNode(Object data)
+    public TreeNode(Client data)
     {
         this.data = data;
         this.left = null;
         this.right = null;
     }
 
-    public Object getData()
+    public Client getData()
     {
         return data;
     }
 
-    public void setData(Object data)
+    public void setData(Client data)
     {
         this.data = data;
     }

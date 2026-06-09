@@ -1,42 +1,38 @@
 package main;
-
 import main.baseClasses.*;
-import main.dataBase.*;
-
-
+import main.dataStructures.*;
 import java.util.Date;
 
 /**
- * main.FactoryManager
- * כולל ניהול מלאי חומרי גלם, ניהול מוצרים, ניהול הזמנות וניהול לקוחות
+ * FactoryManager - מנהל המפעל המרכזי
+ * עם עץ חיפוש בינארי לניהול Clients לפי Client ID
+ * משתמש בכל מבני הנתונים מהפרויקט בלבד
  */
 public class FactoryManager {
-    private QueueAsList ordersQueue;
-    private main.dataBase.LinkedList rawMaterialsInventory;
-    private ArrayList<Product> productsInventory;
-    private ArrayList<Client> clients;
-    private ArrayList<Distributor> distributors;
-    private int totalOrdersProcessed;
-    private int orderIDCounter;
 
-    /**
-     * קונסטרקטור - יוצר מנהל מפעל חדש עם מלאים ריקים
-     */
+    private ClientBSTNode clientsTree;                   // Binary tree of clients bt id
+    private QueueAsList ordersQueue;                // Queue of orders
+    private LinkedList rawMaterialsInventory;       // List of raw materials in inventory
+    private LinkedList productsInventory;           // List of stacks of products in inventory
+    private LinkedList distributorsInventory;       // list of distributer
+    private int totalOrdersProcessed;               // total processed orders
+    private int orderIDCounter;                     // counter for order id
+
+
     public FactoryManager() {
+        this.clientsTree = null;
         this.ordersQueue = new QueueAsList();
-        this.rawMaterialsInventory = new main.dataBase.LinkedList();
-        this.productsInventory = new ArrayList<>();
-        this.clients = new ArrayList<>();
-        this.distributors = new ArrayList<>();
+        this.rawMaterialsInventory = new LinkedList();
+        this.productsInventory = new LinkedList();
+        this.distributorsInventory = new LinkedList();
         this.totalOrdersProcessed = 0;
         this.orderIDCounter = 1000;
     }
 
-    // ==================== ניהול חומרי גלם ====================
+    // ==================== ניהול חומרי גלם (LinkedList) ====================
 
     /**
      * הוספת חומר גלם למלאי
-     * @param material חומר הגלם להוספה
      */
     public void addRawMaterial(RawMaterial material) {
         if (material != null) {
@@ -49,8 +45,6 @@ public class FactoryManager {
 
     /**
      * בדיקת כמות חומר גלם במלאי
-     * @param material חומר הגלם לבדיקה
-     * @return הכמות במלאי
      */
     public double checkRawMaterialStock(RawMaterial material) {
         if (material != null) {
@@ -61,9 +55,6 @@ public class FactoryManager {
 
     /**
      * שימוש בחומר גלם לייצור מוצר
-     * @param material חומר הגלם
-     * @param amount כמות לשימוש
-     * @return true אם ההשימוש הצליח, false אם לא
      */
     public boolean useMaterial(RawMaterial material, double amount) {
         if (material == null) {
@@ -81,29 +72,24 @@ public class FactoryManager {
         return used;
     }
 
-    // ==================== ניהול מוצרים ====================
+    // ==================== ניהול מוצרים (LinkedList) ====================
 
     /**
      * יצירת מוצר חדש
-     * @param name שם המוצר
-     * @param productionCost עלות הייצור
-     * @param weight משקל המוצר בק"ג
-     * @return המוצר שנוצר
      */
     public Product createProduct(String name, double productionCost, double weight) {
         Product product = new Product(name, productionCost, weight);
-        productsInventory.add(product);
+        productsInventory.addLast(product);
         System.out.println("✓ מוצר חדש '" + name + "' נוצר בהצלחה");
         return product;
     }
 
     /**
      * הוספת מוצר למלאי
-     * @param product המוצר להוספה
      */
     public void addProductToInventory(Product product) {
         if (product != null) {
-            productsInventory.add(product);
+            productsInventory.addLast(product);
             System.out.println("✓ מוצר '" + product.getName() + "' נוסף למלאי");
         } else {
             System.out.println("✗ שגיאה: לא ניתן להוסיף מוצר null");
@@ -111,17 +97,27 @@ public class FactoryManager {
     }
 
     /**
-     * הסרת מוצר מהמלאי
-     * @param product המוצר להסרה
-     * @return true אם הוסר בהצלחה
+     * הסרת המוצר הראשון מהמלאי
      */
-    public boolean removeProductFromInventory(Product product) {
-        if (productsInventory.remove(product)) {
-            System.out.println("✓ מוצר '" + product.getName() + "' הוסר מהמלאי");
-            return true;
+    public Product removeFirstProduct() {
+        Object product = productsInventory.removeFirst();
+        if (product != null) {
+            System.out.println("✓ מוצר '" + ((Product)product).getName() + "' הוסר מהמלאי");
+            return (Product) product;
         }
-        System.out.println("✗ שגיאה: מוצר לא נמצא במלאי");
-        return false;
+        System.out.println("✗ אין מוצרים למחיקה");
+        return null;
+    }
+
+    /**
+     * קבלת המוצר האמצעי בתור (median)
+     */
+    public Product getMiddleProduct() {
+        Object middle = productsInventory.getMiddle();
+        if (middle != null) {
+            return (Product) middle;
+        }
+        return null;
     }
 
     /**
@@ -129,96 +125,248 @@ public class FactoryManager {
      */
     public void checkExpiredProducts() {
         System.out.println("\n===== בדיקת מוצרים פגי תוקף =====");
-        ArrayList<Product> expiredProducts = new ArrayList<>();
-        for (Product product : productsInventory) {
+        boolean foundExpired = false;
+
+        // שלוף את כל המוצרים ובדוק כל אחד
+        LinkedList tempList = new LinkedList();
+        Object current;
+        while ((current = productsInventory.removeFirst()) != null) {
+            Product product = (Product) current;
             if (product.isExpired()) {
-                expiredProducts.add(product);
                 System.out.println("⚠ מוצר פג תוקף: " + product.getName());
+                foundExpired = true;
             }
+            tempList.addLast(product);
         }
-        if (expiredProducts.isEmpty()) {
+
+        // החזר את כל המוצרים חזרה
+        while ((current = tempList.removeFirst()) != null) {
+            productsInventory.addLast(current);
+        }
+
+        if (!foundExpired) {
             System.out.println("✓ כל המוצרים בתוקף");
         }
     }
 
     /**
-     * קבלת רשימת כל המוצרים במלאי
-     * @return ArrayList של המוצרים
+     * ספירת מספר המוצרים במלאי
      */
-    public ArrayList<Product> getProductsInventory() {
-        return productsInventory;
+    public int getProductsCount() {
+        int count = 0;
+        LinkedList tempList = new LinkedList();
+        Object current;
+        while ((current = productsInventory.removeFirst()) != null) {
+            count++;
+            tempList.addLast(current);
+        }
+        while ((current = tempList.removeFirst()) != null) {
+            productsInventory.addLast(current);
+        }
+        return count;
     }
 
-    // ==================== ניהול לקוחות ====================
+    // ==================== ניהול Clients (עץ חיפוש בינארי) ====================
 
     /**
-     * הוספת לקוח חדש
-     * @param clientID מזהה הלקוח
-     * @param name שם הלקוח
-     * @return הלקוח שנוצר
+     * הוספת לקוח חדש לעץ
      */
     public Client addClient(int clientID, String name) {
-        Client client = new Client(clientID, name);
-        clients.add(client);
-        System.out.println("✓ לקוח חדש '" + name + "' נוסף בהצלחה");
-        return client;
+        Client newClient = new Client(clientID, name);
+        clientsTree = insertClientIntoTree(clientsTree, newClient);
+        System.out.println("✓ לקוח חדש '" + name + "' (ID: " + clientID + ") נוסף לעץ בהצלחה");
+        return newClient;
     }
 
     /**
-     * הוספת מפיץ חדש
-     * @param clientID מזהה המפיץ
-     * @param name שם המפיץ
-     * @param area אזור ההפצה
-     * @param licenseNumber מספר רישיון
-     * @param distributionPrice מחיר הפצה
-     * @return המפיץ שנוצר
+     * עזר להוספת לקוח לעץ באופן רקורסיבי
      */
-    public Distributor addDistributor(int clientID, String name, Distributor.Region area,
-                                      String licenseNumber, double distributionPrice) {
-        Distributor distributor = new Distributor(clientID, name, area, licenseNumber, distributionPrice);
-        distributors.add(distributor);
-        clients.add(distributor);
-        System.out.println("✓ מפיץ חדש '" + name + "' נוסף בהצלחה באזור " + area);
-        return distributor;
+    private ClientBSTNode insertClientIntoTree(ClientBSTNode node, Client client) {
+        if (node == null) {
+            return new ClientBSTNode(client);
+        }
+
+        if (client.getClientID() < node.client.getClientID()) {
+            node.left = insertClientIntoTree(node.left, client);
+        } else if (client.getClientID() > node.client.getClientID()) {
+            node.right = insertClientIntoTree(node.right, client);
+        } else {
+            System.out.println("⚠ לקוח עם ID זה כבר קיים");
+        }
+        return node;
     }
 
     /**
-     * חיפוש לקוח לפי ID
-     * @param clientID מזהה הלקוח
-     * @return הלקוח או null אם לא נמצא
+     * חיפוש לקוח לפי ID בעץ - O(log n) בממוצע
      */
     public Client findClientByID(int clientID) {
-        for (Client client : clients) {
-            if (client.getCliendID() == clientID) {
-                return client;
-            }
+        ClientBSTNode node = searchInTree(clientsTree, clientID);
+        if (node != null) {
+            return node.client;
         }
         return null;
     }
 
     /**
-     * קבלת רשימת כל הלקוחות
-     * @return ArrayList של הלקוחות
+     * עזר לחיפוש בעץ באופן רקורסיבי
      */
-    public ArrayList<Client> getAllClients() {
-        return clients;
+    private ClientBSTNode searchInTree(ClientBSTNode node, int clientID) {
+        if (node == null) {
+            return null;
+        }
+
+        if (clientID == node.client.getClientID()) {
+            return node;
+        } else if (clientID < node.client.getClientID()) {
+            return searchInTree(node.left, clientID);
+        } else {
+            return searchInTree(node.right, clientID);
+        }
     }
 
     /**
-     * קבלת רשימת כל המפיצים
-     * @return ArrayList של המפיצים
+     * הוספת מפיץ חדש לעץ ובנפרד לרשימה
      */
-    public ArrayList<Distributor> getAllDistributors() {
-        return distributors;
+    public Distributor addDistributor(int clientID, String name, Distributor.Region area,
+                                      String licenseNumber, double distributionPrice) {
+        Distributor newDistributor = new Distributor(clientID, name, area, licenseNumber, distributionPrice);
+        clientsTree = insertClientIntoTree(clientsTree, newDistributor);
+        distributorsInventory.addLast(newDistributor);
+        System.out.println("✓ מפיץ חדש '" + name + "' (ID: " + clientID + ") נוסף לעץ באזור " + area);
+        return newDistributor;
     }
 
-    // ==================== ניהול הזמנות ====================
+    /**
+     * קבלת כל הלקוחות בעץ בסדר In-Order (מהקטן לגדול לפי ID)
+     */
+    public LinkedList getAllClientsSorted() {
+        LinkedList result = new LinkedList();
+        inOrderTraversal(clientsTree, result);
+        return result;
+    }
+
+    /**
+     * traversal In-Order של העץ
+     */
+    private void inOrderTraversal(ClientBSTNode node, LinkedList result) {
+        if (node != null) {
+            inOrderTraversal(node.left, result);
+            result.addLast(node.client);
+            inOrderTraversal(node.right, result);
+        }
+    }
+
+    /**
+     * ספירת מספר הלקוחות בעץ
+     */
+    public int getClientsCount() {
+        return countNodes(clientsTree);
+    }
+
+    /**
+     * עזר לספירת צמתים בעץ
+     */
+    private int countNodes(ClientBSTNode node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + countNodes(node.left) + countNodes(node.right);
+    }
+
+    /**
+     * בדיקה האם לקוח קיים בעץ
+     */
+    public boolean clientExists(int clientID) {
+        return findClientByID(clientID) != null;
+    }
+
+    /**
+     * הסרת לקוח מהעץ לפי ID
+     */
+    public boolean removeClient(int clientID) {
+        int initialSize = getClientsCount();
+        clientsTree = deleteClientFromTree(clientsTree, clientID);
+        int finalSize = getClientsCount();
+
+        if (finalSize < initialSize) {
+            System.out.println("✓ לקוח עם ID " + clientID + " הוסר מהעץ");
+            return true;
+        } else {
+            System.out.println("✗ לקוח עם ID " + clientID + " לא נמצא");
+            return false;
+        }
+    }
+
+    /**
+     * עזר להסרת לקוח מהעץ באופן רקורסיבי
+     */
+    private ClientBSTNode deleteClientFromTree(ClientBSTNode node, int clientID) {
+        if (node == null) {
+            return null;
+        }
+
+        if (clientID < node.client.getClientID()) {
+            node.left = deleteClientFromTree(node.left, clientID);
+        } else if (clientID > node.client.getClientID()) {
+            node.right = deleteClientFromTree(node.right, clientID);
+        } else {
+            // צומת זה הוא זה שאנחנו רוצים למחוק
+            if (node.left == null) {
+                return node.right;
+            } else if (node.right == null) {
+                return node.left;
+            } else {
+                // שני בנים - מצא את ה-successor הקטן ביותר מהעץ הימני
+                ClientBSTNode minNode = findMin(node.right);
+                node.client = minNode.client;
+                node.right = deleteClientFromTree(node.right, minNode.client.getClientID());
+            }
+        }
+        return node;
+    }
+
+    /**
+     * עזר למצוא את הצומת הקטן ביותר בתת-עץ
+     */
+    private ClientBSTNode findMin(ClientBSTNode node) {
+        if (node.left == null) {
+            return node;
+        }
+        return findMin(node.left);
+    }
+
+    /**
+     * קבלת המפיץ (Distributor) האמצעי ברשימה
+     */
+    public Distributor getMiddleDistributor() {
+        Object middle = distributorsInventory.getMiddle();
+        if (middle != null) {
+            return (Distributor) middle;
+        }
+        return null;
+    }
+
+    /**
+     * ספירת מספר המפיצים
+     */
+    public int getDistributorsCount() {
+        int count = 0;
+        LinkedList tempList = new LinkedList();
+        Object current;
+        while ((current = distributorsInventory.removeFirst()) != null) {
+            count++;
+            tempList.addLast(current);
+        }
+        while ((current = tempList.removeFirst()) != null) {
+            distributorsInventory.addLast(current);
+        }
+        return count;
+    }
+
+    // ==================== ניהול הזמנות (Queue) ====================
 
     /**
      * יצירת הזמנה חדשה
-     * @param client הלקוח שמבקש ההזמנה
-     * @param orderDate תאריך ההזמנה
-     * @return ההזמנה שנוצרה
      */
     public Order createOrder(Client client, Date orderDate) {
         int newOrderID = orderIDCounter++;
@@ -229,7 +377,6 @@ public class FactoryManager {
 
     /**
      * הוספת הזמנה לתור
-     * @param order ההזמנה להוספה
      */
     public void addOrderToQueue(Order order) {
         if (order != null) {
@@ -243,14 +390,14 @@ public class FactoryManager {
 
     /**
      * עיבוד ההזמנה הבאה בתור
-     * @return ההזמנה שעובדה או null אם התור ריק
      */
     public Order processNextOrder() {
-        Order order = (Order) ordersQueue.poll();
+        Object order = ordersQueue.poll();
         if (order != null) {
             totalOrdersProcessed++;
-            System.out.println("✓ הזמנה #" + order.getOrderId() + " עובדה בהצלחה");
-            return order;
+            Order processedOrder = (Order) order;
+            System.out.println("✓ הזמנה #" + processedOrder.getOrderId() + " עובדה בהצלחה");
+            return processedOrder;
         } else {
             System.out.println("ℹ תור ההזמנות ריק");
             return null;
@@ -259,15 +406,14 @@ public class FactoryManager {
 
     /**
      * בדיקת ההזמנה הבאה בתור ללא הסרתה
-     * @return ההזמנה הבאה או null אם התור ריק
      */
     public Order peekNextOrder() {
-        return (Order) ordersQueue.peek();
+        Object order = ordersQueue.peek();
+        return order != null ? (Order) order : null;
     }
 
     /**
      * בדיקת גודל תור ההזמנות
-     * @return מספר ההזמנות בתור
      */
     public int getOrdersQueueSize() {
         return ordersQueue.size();
@@ -275,7 +421,6 @@ public class FactoryManager {
 
     /**
      * בדיקה האם תור ההזמנות ריק
-     * @return true אם ריק
      */
     public boolean isOrdersQueueEmpty() {
         return ordersQueue.isEmpty();
@@ -288,9 +433,9 @@ public class FactoryManager {
      */
     public void printInventorySummary() {
         System.out.println("\n========== דוח מצב המלאי ==========");
-        System.out.println("📦 מוצרים במלאי: " + productsInventory.size());
-        System.out.println("👥 לקוחות רשומים: " + clients.size());
-        System.out.println("🚚 מפיצים רשומים: " + distributors.size());
+        System.out.println("📦 מוצרים במלאי: " + getProductsCount());
+        System.out.println("👥 לקוחות רשומים בעץ: " + getClientsCount());
+        System.out.println("🚚 מפיצים רשומים: " + getDistributorsCount());
         System.out.println("📋 הזמנות בתור: " + ordersQueue.size());
         System.out.println("✅ הזמנות מעובדות: " + totalOrdersProcessed);
         System.out.println("===================================\n");
@@ -301,29 +446,53 @@ public class FactoryManager {
      */
     public void printAllProducts() {
         System.out.println("\n===== רשימת מוצרים במלאי =====");
-        if (productsInventory.isEmpty()) {
+        LinkedList tempList = new LinkedList();
+        Object current;
+        int count = 0;
+
+        while ((current = productsInventory.removeFirst()) != null) {
+            count++;
+            Product product = (Product) current;
+            System.out.println(count + ". " + product);
+            tempList.addLast(product);
+        }
+
+        while ((current = tempList.removeFirst()) != null) {
+            productsInventory.addLast(current);
+        }
+
+        if (count == 0) {
             System.out.println("אין מוצרים במלאי");
-        } else {
-            for (int i = 0; i < productsInventory.size(); i++) {
-                System.out.println((i + 1) + ". " + productsInventory.get(i));
-            }
         }
         System.out.println("=============================\n");
     }
 
     /**
-     * הדפסת רשימת כל הלקוחות
+     * הדפסת רשימת כל הלקוחות (ממויינים לפי ID)
      */
     public void printAllClients() {
-        System.out.println("\n===== רשימת לקוחות =====");
-        if (clients.isEmpty()) {
-            System.out.println("אין לקוחות רשומים");
-        } else {
-            for (int i = 0; i < clients.size(); i++) {
-                System.out.println((i + 1) + ". " + clients.get(i));
-            }
+        System.out.println("\n===== רשימת לקוחות (ממויינים לפי ID) =====");
+        LinkedList sortedClients = getAllClientsSorted();
+        Object current;
+        int count = 0;
+        LinkedList tempList = new LinkedList();
+
+        while ((current = sortedClients.removeFirst()) != null) {
+            count++;
+            Client client = (Client) current;
+            System.out.println(count + ". " + client);
+            tempList.addLast(client);
         }
-        System.out.println("========================\n");
+
+        // שחזור הרשימה
+        while ((current = tempList.removeFirst()) != null) {
+            sortedClients.addLast(current);
+        }
+
+        if (count == 0) {
+            System.out.println("אין לקוחות רשומים");
+        }
+        System.out.println("=========================================\n");
     }
 
     /**
@@ -335,10 +504,10 @@ public class FactoryManager {
             System.out.println("תור ההזמנות ריק");
         } else {
             System.out.println("הזמנות בתור: " + ordersQueue.size());
-            // בגלל שהתור מממוש בעזרת LinkedList, נדפיס את ההזמנה הקדמית
-            Order peek = (Order) ordersQueue.peek();
+            Object peek = ordersQueue.peek();
             if (peek != null) {
-                System.out.println("ההזמנה הבאה לעיבוד: " + peek);
+                Order order = (Order) peek;
+                System.out.println("ההזמנה הבאה לעיבוד: " + order);
             }
         }
         System.out.println("=======================\n");
@@ -349,9 +518,9 @@ public class FactoryManager {
      */
     public String getManagerStatus() {
         return "\n=== סטטוס מנהל המפעל ===" +
-                "\n📊 מוצרים: " + productsInventory.size() +
-                "\n👥 לקוחות: " + clients.size() +
-                "\n🚚 מפיצים: " + distributors.size() +
+                "\n📊 מוצרים: " + getProductsCount() +
+                "\n👥 לקוחות בעץ: " + getClientsCount() +
+                "\n🚚 מפיצים: " + getDistributorsCount() +
                 "\n📋 הזמנות בתור: " + ordersQueue.size() +
                 "\n✅ סה\"כ הזמנות מעובדות: " + totalOrdersProcessed +
                 "\n=======================\n";
@@ -359,23 +528,38 @@ public class FactoryManager {
 
     /**
      * קבלת סה"כ הזמנות מעובדות
-     * @return מספר ההזמנות שעובדו
      */
     public int getTotalOrdersProcessed() {
         return totalOrdersProcessed;
     }
 
     /**
-     * איפוס מנהל המפעל (מחיקת כל הנתונים)
+     * איפוס מנהל המפעל
      */
     public void reset() {
+        clientsTree = null;
         ordersQueue = new QueueAsList();
-        rawMaterialsInventory = new main.dataBase.LinkedList();
-        productsInventory.clear();
-        clients.clear();
-        distributors.clear();
+        rawMaterialsInventory = new LinkedList();
+        productsInventory = new LinkedList();
+        distributorsInventory = new LinkedList();
         totalOrdersProcessed = 0;
         orderIDCounter = 1000;
         System.out.println("✓ מנהל המפעל אופס");
+    }
+
+    // ==================== מחלקת עזר - צומת בעץ החיפוש ====================
+    /**
+     * מחלקה פנימית לייצוג צומת בעץ חיפוש בינארי של Clients
+     */
+    private static class ClientBSTNode {
+        Client client;
+        ClientBSTNode left;
+        ClientBSTNode right;
+
+        ClientBSTNode(Client client) {
+            this.client = client;
+            this.left = null;
+            this.right = null;
+        }
     }
 }

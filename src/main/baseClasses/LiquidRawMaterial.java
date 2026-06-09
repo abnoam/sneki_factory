@@ -6,6 +6,7 @@ public class LiquidRawMaterial extends RawMaterial
     private double volumeInLiters;
     private double storageTemperature;
     private String containerType;
+
     public LiquidRawMaterial(int serialNumber,double quantityInStock, Date expirationDate,double purchasePrice,double volumeInLiters,double storageTemperature,String containerType)
     {
         super(serialNumber,quantityInStock,expirationDate,purchasePrice);

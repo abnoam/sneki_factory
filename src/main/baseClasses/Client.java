@@ -1,21 +1,18 @@
 package main.baseClasses;
+import main.dataStructures.QueueAsList;
 
-import main.dataBase.TreeIdentify;
 
-import java.util.Queue;
-import java.util.LinkedList;
-
-public class Client implements TreeIdentify
+public class Client
 {
     private int clientID;
     private String name;
-    private Queue<Order> ordersQueue;
+    private QueueAsList ordersQueue;
 
     public Client(int clientID, String name)
     {
         this.clientID = clientID;
         this.name = name;
-        this.ordersQueue = new LinkedList<Order>();
+        this.ordersQueue = new QueueAsList();
     }
 
     public void addOrder(Order newOrder)        //adds order to the queue
@@ -30,18 +27,19 @@ public class Client implements TreeIdentify
 
     public Order processNextOrder()     //removes order from queue amd returns it
     {
-        return this.ordersQueue.poll();
+        return (Order) this.ordersQueue.poll();
     }
 
     public Order peekNextOrder()
     {
-        return this.ordersQueue.peek(); // returns the order from the queue without removing it
+        return (Order) this.ordersQueue.peek(); // returns the order from the queue without removing it
     }
 
-    public int getCliendID()
+    public int getClientID()
     {
         return clientID;
     }
+
     public void setClientID(int clientID)
     {
         this.clientID = clientID;
@@ -57,18 +55,13 @@ public class Client implements TreeIdentify
         this.name = name;
     }
 
-    public Queue<Order> getOrdersQueue()
+    public QueueAsList getOrdersQueue()
     {
         return ordersQueue;
     }
 
-    public int getTreeID()
-    {
-        return this.getCliendID();
-    }
-
     public String toString()
     {
-        return "main.baseClasses.Client #" + getCliendID() + " | Name: " + getName() + " | Pending Orders: " + ordersQueue.size();
+        return "Client #" + getClientID() + " | Name: " + getName() + " | Pending Orders: " + ordersQueue.size();
     }
 }

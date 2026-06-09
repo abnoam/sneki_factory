@@ -50,3 +50,18 @@ public class StackAsList implements MyStack
         return this.size;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//67

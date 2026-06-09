@@ -1,10 +1,8 @@
 package main.baseClasses;
 
-import main.dataBase.TreeIdentify;
-
 import java.util.Date;
 
-public abstract class RawMaterial implements Valuable, TreeIdentify
+public abstract class RawMaterial implements Valuable
 {
     private int serialNumber;
     private double quantityInStock;
