@@ -1,4 +1,4 @@
-package main.dataBase;
+package main.dataStructures;
 
 public interface MyQueue
 {

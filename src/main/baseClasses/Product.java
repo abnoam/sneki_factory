@@ -1,5 +1,5 @@
 package main.baseClasses;
-import main.dataBase.LinkedList;
+import main.dataStructures.LinkedList;
 
 import java.util.Date;
 

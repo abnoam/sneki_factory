@@ -1,4 +1,4 @@
-package main.dataBase;
+package main.dataStructures;
 
 public class QueueAsList implements  MyQueue
 {
