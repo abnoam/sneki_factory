@@ -2,11 +2,11 @@ package main.baseClasses;
 import main.dataStructures.LinkedList;
 import main.dataStructures.LinkedNode;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Order {
     private Client client;
-    private Date orderDate;
+    private LocalDateTime orderDate;
     private LinkedList productsList;
     private int orderID;
 
@@ -16,7 +16,7 @@ public class Order {
      * @param orderDate The date the order was created.
      * @param orderID id of the order.
      */
-    public Order(Client client, Date orderDate, int orderID)
+    public Order(Client client, LocalDateTime orderDate, int orderID)
     {
         this.client = client;
         this.orderDate = orderDate;
@@ -46,9 +46,14 @@ public class Order {
      */
     public void generateInvoice()
     {
+       LocalDateTime date = this.getOrderDate();
        System.out.println("========= INVOICE =========");
-       System.out.println("main.baseClasses.Order ID: " + this.getOrderId());
-       System.out.println("main.baseClasses.Order Date: " + this.getOrderDate());
+       System.out.println("Order ID: " + this.getOrderId());
+       System.out.println("Order Date: " + date.getDayOfMonth() + "/"
+                                         + date.getMonthValue() + "/"
+                                         + date.getYear() + " "
+                                         + date.getHour() + ":"
+                                         + date.getMinute() );
        System.out.println("Customer: " + this.getClient().getName());
        System.out.println("---------------------------");
 
@@ -68,7 +73,8 @@ public class Order {
        System.out.println("---------------------------");
        System.out.println("Subtotal = " + subTotal + " " + Valuable.CURRENCY);
         double taxAmount = subTotal * Valuable.TAX_PERCENT;
-        System.out.println("VAT (" + (Valuable.TAX_PERCENT * 100) + "%): " + taxAmount + " " + Valuable.CURRENCY);
+        System.out.print("VAT (" + (Valuable.TAX_PERCENT * 100) + "%): ");
+        System.out.printf("%.2f  %s\n",taxAmount , Valuable.CURRENCY);
 
         double finalTotal = subTotal + taxAmount;
         System.out.println("TOTAL TO PAY: " + finalTotal + " " + Valuable.CURRENCY);
@@ -98,18 +104,25 @@ public class Order {
         return productsList;
     }
 
-    public Date getOrderDate()
+    public LocalDateTime getOrderDate()
     {
         return orderDate;
     }
-    public void setOrderDate(Date orderDate)
+
+    public void setOrderDate(LocalDateTime orderDate)
     {
         this.orderDate = orderDate;
     }
 
     public String toString()
     {
-        return "Order #" + getOrderId() + " | Customer: " + getClient().getName() + " | Date: " + getOrderDate();
+        LocalDateTime date = this.getOrderDate();
+        return "Order #" + getOrderId() + " | Customer: " + getClient().getName() + " | Date: "
+                                                                                            + date.getDayOfMonth() + "/"
+                                                                                            + date.getMonthValue() + "/"
+                                                                                            + date.getYear() + " "
+                                                                                            + date.getHour() + ":"
+                                                                                            + date.getMinute();
     }
 
 }

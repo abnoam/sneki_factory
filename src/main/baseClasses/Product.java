@@ -1,14 +1,15 @@
 package main.baseClasses;
 import main.dataStructures.LinkedList;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 
 public class Product implements Valuable
 {
     private String name;
     private double productionCost;
-    private Date expiryDate;
+    private LocalDateTime expiryDate;
     private double weight;
     private LinkedList rawMaterials;
 
@@ -20,7 +21,7 @@ public class Product implements Valuable
      * @param weight            The weight of the product in kg.
      * @param initialMaterials  An initial list of raw materials.
      */
-    public Product(String name, double productionCost, Date expiryDate, double weight, RawMaterial[] initialMaterials) // full constructor
+    public Product(String name, double productionCost, LocalDateTime expiryDate, double weight, RawMaterial[] initialMaterials) // full constructor
     {
         this.name = name;
         this.productionCost = productionCost;
@@ -51,7 +52,7 @@ public class Product implements Valuable
         this.name = name;
         this.productionCost = productionCost;
         this.weight = weight;
-        this.expiryDate = new Date(); // Defaults to current date
+        this.expiryDate = LocalDateTime.now(); // Defaults to current date
         this.rawMaterials = new LinkedList(); // inits an empty list
     }
     /**
@@ -60,8 +61,7 @@ public class Product implements Valuable
      */
     public boolean isExpired()
     {
-        Date currentDay = new Date();
-        return currentDay.after(this.expiryDate);
+        return LocalDateTime.now().isAfter((this.expiryDate));
     }
     /**
      * Updates the weight of the product.
@@ -103,12 +103,12 @@ public class Product implements Valuable
         this.productionCost = productionCost;
     }
     
-    public Date getExpiryDate()
+    public LocalDateTime getExpiryDate()
     {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate)
+    public void setExpiryDate(LocalDateTime expiryDate)
     {
         this.expiryDate = expiryDate;
     }
@@ -129,7 +129,13 @@ public class Product implements Valuable
 
     public String toString()
     {
-        return "main.baseClasses.Product: " + getName() + " | Cost: " + getProductionCost() + Valuable.CURRENCY + " | Weight: " + getWeight() + "kg | Expire: " + getExpiryDate();
+        LocalDateTime date = this.getExpiryDate();
+
+        return "Product: " + getName() + " | Cost: " + getProductionCost() + Valuable.CURRENCY + " | Weight: " + getWeight() + "kg | Expire: " + date.getDayOfMonth() + "/"
+                                                                                                                                               + date.getMonthValue() + "/"
+                                                                                                                                               + date.getYear() + " "
+                                                                                                                                               + date.getHour() + ":"
+                                                                                                                                               + date.getMinute();
     }
 
     // interface methods:

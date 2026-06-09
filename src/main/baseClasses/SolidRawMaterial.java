@@ -1,6 +1,6 @@
 package main.baseClasses;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class SolidRawMaterial extends RawMaterial
 {
@@ -8,7 +8,7 @@ public class SolidRawMaterial extends RawMaterial
     private String palletArrangement;
     private boolean isMoistureSensitive;
 
-    public SolidRawMaterial(int serialNumber, double quantityInStock, Date expirationDate, double purchasePrice, double weightInKg, String palletArrangement, boolean isMoistureSensitive){
+    public SolidRawMaterial(int serialNumber, double quantityInStock, LocalDateTime expirationDate, double purchasePrice, double weightInKg, String palletArrangement, boolean isMoistureSensitive){
         super(serialNumber,quantityInStock,expirationDate,purchasePrice);
         this.weightInKg = weightInKg;
         this.palletArrangement = palletArrangement;

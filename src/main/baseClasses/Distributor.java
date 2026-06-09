@@ -1,6 +1,6 @@
 package main.baseClasses;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Distributor extends Client
 {
@@ -11,7 +11,7 @@ public class Distributor extends Client
 
     private Region distributionArea;
     private double distributionPrice;
-    private Date lastShipmentDate;
+    private LocalDateTime lastShipmentDate;
     private String licenseNumber;
 
     public Distributor(int clientID, String name, Region distributionArea, String licenseNumber, double distributionPrice )
@@ -24,7 +24,7 @@ public class Distributor extends Client
 
     public void recordNewShipment()
     {
-        this.lastShipmentDate = new Date();
+        this.lastShipmentDate = LocalDateTime.now();
     }
 
     public Region getDistributionArea()
@@ -45,7 +45,7 @@ public class Distributor extends Client
         this.licenseNumber = licenseNumber;
     }
 
-    public Date getLastShipmentDate()
+    public LocalDateTime getLastShipmentDate()
     {
         return lastShipmentDate;
     }

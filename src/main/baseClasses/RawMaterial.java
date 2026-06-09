@@ -1,17 +1,17 @@
 package main.baseClasses;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public abstract class RawMaterial implements Valuable
 {
     private String name;
     private int serialNumber;
     private double quantityInStock;
-    private Date expirationDate;
+    private LocalDateTime expirationDate;
     private double purchasePrice;
 
 
-    public RawMaterial(int serialNumber, double quantityInStock,Date expirationDate, double purchasePrice)      //full constructor
+    public RawMaterial(int serialNumber, double quantityInStock,LocalDateTime expirationDate, double purchasePrice)      //full constructor
     {
         this.serialNumber = serialNumber;
         this.quantityInStock = quantityInStock;
@@ -45,8 +45,7 @@ public abstract class RawMaterial implements Valuable
 
     public boolean isExpired()      //checks expiration date
     {
-        Date currentDate = new Date();
-        return expirationDate.before(currentDate);
+        return expirationDate.isBefore(LocalDateTime.now());
     }
 
     //implementing valuable functions
@@ -96,12 +95,12 @@ public abstract class RawMaterial implements Valuable
         this.quantityInStock = quantityInStock;
     }
 
-    public Date getExpirationDate()
+    public LocalDateTime getExpirationDate()
     {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate)
+    public void setExpirationDate(LocalDateTime expirationDate)
     {
         this.expirationDate = expirationDate;
     }
@@ -123,12 +122,18 @@ public abstract class RawMaterial implements Valuable
 
     public String toString()
     {
-        return "main.baseClasses.RawMaterial{" +
-                "serialNumber=" + serialNumber +
-                ", quantityInStock=" + quantityInStock +
-                ", expirationDate=" + expirationDate +
-                ", purchasePrice=" + purchasePrice +
-                ", expired=" + isExpired() +
+        LocalDateTime date = this.getExpirationDate();
+        return "RawMaterial {" +
+                "name: " + name + "/" +
+                "serialNumber: " + serialNumber +
+                ", quantityInStock: " + quantityInStock +
+                ", expirationDate: " + date.getDayOfMonth() + "/"
+                                    + date.getMonthValue() + "/"
+                                    + date.getYear() + " "
+                                    + date.getHour() + ":"
+                                    + date.getMinute() +
+                ", purchasePrice: " + purchasePrice +
+                ", expired: " + isExpired() +
                 '}';
     }
 }

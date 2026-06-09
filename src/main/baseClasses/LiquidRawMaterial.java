@@ -1,13 +1,13 @@
 package main.baseClasses;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 public class LiquidRawMaterial extends RawMaterial
 {
     private double volumeInLiters;
     private double storageTemperature;
     private String containerType;
 
-    public LiquidRawMaterial(int serialNumber,double quantityInStock, Date expirationDate,double purchasePrice,double volumeInLiters,double storageTemperature,String containerType)
+    public LiquidRawMaterial(int serialNumber,double quantityInStock, LocalDateTime expirationDate,double purchasePrice,double volumeInLiters,double storageTemperature,String containerType)
     {
         super(serialNumber,quantityInStock,expirationDate,purchasePrice);
         this.volumeInLiters = volumeInLiters;

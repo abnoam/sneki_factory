@@ -42,7 +42,7 @@ public class MyBST
         return root;
     }
 
-    public TreeNode searchRec(TreeNode root, int clientID)
+    private TreeNode searchRecByID(TreeNode root, int clientID)
     {
         if(root == null || root.getData().getClientID() == clientID)
             return root;
@@ -50,10 +50,15 @@ public class MyBST
 
         if(root.getData().getClientID() > clientID) // search left side of the tree
         {
-            return searchRec(root.getLeft(), clientID);
+            return searchRecByID(root.getLeft(), clientID);
         }
 
-        return searchRec(root.getRight(), clientID); // search right side of the tree
+        return searchRecByID(root.getRight(), clientID); // search right side of the tree
+    }
+
+    public TreeNode searchByID(int clientID)
+    {
+        return searchRecByID(root,clientID);
     }
 
     public void printInOrder()
