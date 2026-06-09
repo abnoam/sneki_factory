@@ -4,6 +4,7 @@ import java.util.Date;
 
 public abstract class RawMaterial implements Valuable
 {
+    private String name;
     private int serialNumber;
     private double quantityInStock;
     private Date expirationDate;
@@ -67,6 +68,13 @@ public abstract class RawMaterial implements Valuable
     }
 
     // Getters & Setters
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name=name;
+    }
 
     public int getSerialNumber()
     {
