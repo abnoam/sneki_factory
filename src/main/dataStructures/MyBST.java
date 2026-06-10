@@ -74,4 +74,46 @@ public class MyBST
         printInOrderRec(root.getRight());
         }
     }
+
+    private Client findMin(TreeNode root)
+    {
+        Client min = root.getData();
+        while(root.getLeft() != null)
+        {
+            min = root.getLeft().getData();
+            root = root.getLeft();
+        }
+        return min;
+    }
+
+
+    private TreeNode deleteRec(TreeNode root, int clientID)
+    {
+        // Find the target node
+        if(clientID < root.getData().getClientID())
+            root.setLeft(deleteRec(root.getLeft(), clientID));
+        else if(clientID > root.getData().getClientID())
+            root.setRight(deleteRec(root.getRight(), clientID));
+        else
+        {   // when the node is found, check if it has children (leafs)
+            if (root.getLeft() == null)
+                return root.getRight();
+            if (root.getRight() == null)
+                return root.getLeft();
+
+            // 2 children - find the minimum right node.
+            root.setData(findMin(root.getRight()));
+            root.setRight(deleteRec(root.getRight(), root.getData().getClientID()));
+        }
+        return root;
+    }
+
+    public void delete(int clientID)
+    {
+        root = deleteRec(root, clientID);
+    }
+
+
+
+
 }

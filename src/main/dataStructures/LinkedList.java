@@ -79,4 +79,19 @@ public class LinkedList
         }
         return ans;
     }
+
+    public int size()
+    {
+        int count = 0;
+        LinkedNode current = first;
+
+        while (current != null)
+        {
+            count++;
+            current = current.getNext();
+        }
+
+        return count;
+    }
+
 }

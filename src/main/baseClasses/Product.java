@@ -1,5 +1,6 @@
 package main.baseClasses;
 import main.dataStructures.LinkedList;
+import main.dataStructures.StackAsList;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +13,7 @@ public class Product implements Valuable
     private LocalDateTime expiryDate;
     private double weight;
     private LinkedList rawMaterials;
+    private StackAsList batches;
 
     /**
      * Full constructor for a new Product
@@ -27,7 +29,8 @@ public class Product implements Valuable
         this.productionCost = productionCost;
         this.expiryDate = expiryDate;
         this.weight = weight;
-        this.rawMaterials = new LinkedList();
+        this.rawMaterials = new LinkedList(); // inits an empty list
+        this.batches = new StackAsList(); // inits empty batch stack
 
         if (initialMaterials != null)
         {
@@ -54,6 +57,7 @@ public class Product implements Valuable
         this.weight = weight;
         this.expiryDate = LocalDateTime.now(); // Defaults to current date
         this.rawMaterials = new LinkedList(); // inits an empty list
+        this.batches = new StackAsList(); //inits empty batch stack
     }
     /**
      * Checks if the current product has passed its expiry date.
@@ -125,6 +129,114 @@ public class Product implements Valuable
     public LinkedList getRawMaterials()
     {
         return rawMaterials;
+    }
+
+    public void addBatch(Batch batch) // add batches according to batch expiry dates
+    {
+        if(batch == null)
+        {
+            return;
+        }
+
+        StackAsList temp = new StackAsList();
+
+        while(!batches.isEmpty())
+        {
+            Batch current = (Batch)batches.peek();
+
+            if(current.getExpiryDate().isBefore(batch.getExpiryDate()))
+            {
+                temp.push(batches.pop()); // add to stack
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        batches.push(batch);
+
+        while(!temp.isEmpty())
+        {
+            batches.push(temp.pop());
+        }
+    }
+
+    public Batch getClosestBatch()
+    {
+        if(batches.isEmpty())
+        {
+            return null;
+        }
+
+        return (Batch)batches.peek();
+    }
+
+    public boolean sellFromStock(int amount)
+    {
+        if(amount <= 0)
+        {
+            return false;
+        }
+
+        while(amount > 0 && !batches.isEmpty())
+        {
+            Batch batch = (Batch)batches.peek();
+
+            if(batch.getQuantity() > amount)
+            {
+                batch.setQuantity(batch.getQuantity() - amount); // reduces the amount of the batch that has been sent to sell
+
+                return true;
+            }
+
+            amount -= batch.getQuantity(); // removes the batch quantity from the wanted amount
+
+            batches.pop(); //removes batch from stack.
+        }
+        return amount == 0; // returns TRUE if wanted amount is sent.
+    }
+
+    public int getTotalStock() // calc total stock in the stack
+    {
+        StackAsList temp = new StackAsList();
+
+        int total = 0;
+
+        while(!batches.isEmpty())
+        {
+            Batch batch = (Batch)batches.pop(); // removes from original stack
+
+            total += batch.getQuantity();
+
+            temp.push(batch); // adds to temporary stack
+        }
+
+        while(!temp.isEmpty())
+        {
+            batches.push(temp.pop()); //returns the batches back to the original stack
+        }
+
+        return total;
+    }
+
+    public void printBatches()
+    {
+        StackAsList temp = new StackAsList();
+
+        while(!batches.isEmpty())
+        {
+            Batch batch = (Batch)batches.pop(); // removes from original stack
+
+            System.out.println(batch);
+
+            temp.push(batch); // adds to temporary stack
+        }
+
+        while(!temp.isEmpty())
+        {
+            batches.push(temp.pop()); //returns the batches back to the original stack
+        }
     }
 
     public String toString()

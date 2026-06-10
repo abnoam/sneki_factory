@@ -1,21 +1,19 @@
 package main;
 
-import main.baseClasses.Client;
 import main.baseClasses.Order;
+import main.baseClasses.Client;
 import main.baseClasses.Product;
 import main.baseClasses.RawMaterial;
 import main.dataStructures.LinkedList;
-import main.dataStructures.MyBST;
 import main.dataStructures.QueueAsList;
-import main.dataStructures.StackAsList;
+import main.dataStructures.MyBST;
+
 
 public class FactoryManager
 {
-    private MyBST clientsTree;
+    private MyBST clientsTree; // client BST sorted by clientID
 
     private QueueAsList ordersQueue;
-
-    private StackAsList alertsStack;
 
     private LinkedList productsInventory;
 
@@ -28,8 +26,6 @@ public class FactoryManager
         clientsTree = new MyBST();
 
         ordersQueue = new QueueAsList();
-
-        alertsStack = new StackAsList();
 
         productsInventory = new LinkedList();
 
@@ -52,7 +48,17 @@ public class FactoryManager
 
     public Client findClient(int clientID)
     {
+        if (clientsTree.searchByID(clientID) == null)
+        {
+            return null;
+        }
+
         return clientsTree.searchByID(clientID).getData();
+    }
+
+    public void deleteClient(int clientID)
+    {
+        clientsTree.delete(clientID);
     }
 
     public void printClients()
@@ -119,6 +125,34 @@ public class FactoryManager
         }
     }
 
+    public boolean deleteProduct(String name)
+    {
+        if (productsInventory == null || productsInventory.isEmpty()) {
+            return false;
+        }
+
+        boolean found = false;
+        LinkedList newInventory = new LinkedList();
+        main.dataStructures.LinkedNode current = productsInventory.getFirst();
+
+        while (current != null) {
+            Product p = (Product) current.getData();
+            // אם זה לא המוצר שאנחנו רוצים למחוק, נוסיף אותו לרשימה החדשה
+            if (!p.getName().equalsIgnoreCase(name)) {
+                newInventory.addLast(p);
+            } else {
+                found = true; // מצאנו ודילגנו עליו (נמחק)
+            }
+            current = current.getNext();
+        }
+
+        // אם מצאנו ומחקנו, נעדכן את הרשימה הראשית
+        if (found) {
+            productsInventory = newInventory;
+        }
+        return found;
+    }
+
     public Product removeFirstProduct()
     {
         if (productsInventory.isEmpty())
@@ -172,57 +206,36 @@ public class FactoryManager
     }
 
     // ==========================
-    // ALERT STACK
+    // PRODUCT STOCK MANAGEMENT
     // ==========================
 
-    public void addAlert(String alert)
+    public boolean sellProduct(Product product, int quantity)
     {
-        if (alert != null)
+        if (product == null)
         {
-            alertsStack.push(alert);
+            return false;
+        }
+
+        return product.sellFromStock(quantity);
+    }
+
+    public void printProductStock(Product product)
+    {
+        if (product != null)
+        {
+            System.out.println("\n=== " + product.getName() + " Stock ===");
+            product.printBatches();
+            System.out.println("Total Stock: " + product.getTotalStock());
         }
     }
 
-    public String getLastAlert()
+    public int getProductTotalStock(Product product)
     {
-        if (alertsStack.isEmpty())
+        if (product == null)
         {
-            return null;
+            return 0;
         }
 
-        return (String) alertsStack.peek();
-    }
-
-    public String removeLastAlert()
-    {
-        if (alertsStack.isEmpty())
-        {
-            return null;
-        }
-
-        return (String) alertsStack.pop();
-    }
-
-    public boolean hasAlerts()
-    {
-        return !alertsStack.isEmpty();
-    }
-
-    public StackAsList getAlertsStack()
-    {
-        return alertsStack;
-    }
-
-    // ==========================
-    // GENERAL
-    // ==========================
-
-    public void printSystemStatus()
-    {
-        System.out.println("========== FACTORY STATUS ==========");
-        System.out.println("Clients Tree: Ready");
-        System.out.println("Orders Queue Empty: " + ordersQueue.isEmpty());
-        System.out.println("Alerts Stack Empty: " + alertsStack.isEmpty());
-        System.out.println("====================================");
+        return product.getTotalStock();
     }
 }
