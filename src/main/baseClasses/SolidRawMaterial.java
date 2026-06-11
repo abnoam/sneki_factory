@@ -8,13 +8,14 @@ public class SolidRawMaterial extends RawMaterial
     private String palletArrangement;
     private boolean isMoistureSensitive;
 
-    public SolidRawMaterial(int serialNumber, double quantityInStock, LocalDateTime expirationDate, double purchasePrice, double weightInKg, String palletArrangement, boolean isMoistureSensitive){
-        super(serialNumber,quantityInStock,expirationDate,purchasePrice);
+    public SolidRawMaterial(String name, int serialNumber, double quantityInStock, LocalDateTime expirationDate, double purchasePrice, double weightInKg, String palletArrangement, boolean isMoistureSensitive){
+        super(name, serialNumber,quantityInStock,expirationDate,purchasePrice);
         this.weightInKg = weightInKg;
         this.palletArrangement = palletArrangement;
         this.isMoistureSensitive = isMoistureSensitive;
     }
-    public int calcPackages(){
+    public int calcPackages()
+    {
         return (int)(weightInKg / 0.5); // a package weight is 0.5 kg.
     }
     public double calcWastageFactor(){
@@ -26,12 +27,25 @@ public class SolidRawMaterial extends RawMaterial
     public void setWeightInKg(double weightInKg){
         this.weightInKg=weightInKg;
     }
-    public String getPalletArrangement() {
+    public String getPalletArrangement()
+    {
         return palletArrangement;
     }
-    public void setPalletArrangement(String palletArrangement) {
+    public void setPalletArrangement(String palletArrangement)
+    {
         this.palletArrangement = palletArrangement;
     }
-    public boolean isMoistureSensitive() { return isMoistureSensitive; }
-    public void setMoistureSensitive(boolean isMoistureSensitive) { this.isMoistureSensitive = isMoistureSensitive; }
+    public boolean isMoistureSensitive()
+    {
+        return isMoistureSensitive;
+    }
+    public void setMoistureSensitive(boolean isMoistureSensitive)
+    {
+        this.isMoistureSensitive = isMoistureSensitive;
+    }
+
+    public String toString()
+    {
+        return "Solid rawMaterial - " + super.toString()  + " | Weight in KG: " + weightInKg;
+    }
 }

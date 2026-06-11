@@ -3,6 +3,8 @@ package main;
 import main.baseClasses.*;
 import main.dataStructures.LinkedList;
 import main.dataStructures.LinkedNode;
+
+import java.util.Locale;
 import java.util.Scanner;
 import java.time.LocalDateTime;
 
@@ -18,6 +20,7 @@ public class Menu {
     public void run() {
         boolean running = true;
         while (running) {
+            clearScreen();
             System.out.println("\n=== Sneki Factory - Main Menu ===");
             System.out.println("1. Client Management");
             System.out.println("2. Order Management");
@@ -30,13 +33,32 @@ public class Menu {
             String choice = readString("Select an option: ");
 
             switch (choice) {
-                case "1": clientMenu(); break;
-                case "2": orderMenu(); break;
-                case "3": inventoryMenu(); break;
-                case "4": rawMaterialsMenu(); break;
-                case "5": distributorMenu(); break;
-                case "6": manager.printProductCatalogMatrix(); break;
+                case "1":
+                    clearScreen();
+                    clientMenu();
+                break;
+                case "2":
+                    clearScreen();
+                    orderMenu();
+                break;
+                case "3":
+                    clearScreen();
+                    inventoryMenu();
+                break;
+                case "4":
+                    clearScreen();
+                    rawMaterialsMenu();
+                break;
+                case "5":
+                    clearScreen();
+                    distributorMenu();
+                break;
+                case "6":
+                    clearScreen();
+                    manager.printProductCatalogMatrix();
+                break;
                 case "0":
+                    clearScreen();
                     System.out.println("Shutting down the system. Goodbye!");
                     running = false;
                     break;
@@ -219,25 +241,30 @@ public class Menu {
                     boolean addingMaterials = true;
                     int rawMaterialsCount = 0; // מונה לבדיקה האם הוכנסו חומרי גלם
 
-                    while (addingMaterials) {
-                        String rmName = readString("Enter raw material name (or 'done' to finish): ");
-                        if (rmName.equalsIgnoreCase("done")) {
+                    while (addingMaterials)
+                    {
+                        String rawName = readString("Enter raw material name (or 'done' to finish): ");
+                        if (rawName.equals("Done"))
+                        {
                             addingMaterials = false;
                             continue;
                         }
 
-                        RawMaterial rm = searchRawMaterialByName(rmName);
-                        if (rm != null) {
+                        RawMaterial rm = searchRawMaterialByName(rawName);
+                        if (rm != null)
+                        {
                             p.addRawMaterial(rm);
                             rawMaterialsCount++; // מעדכנים שהוכנס חומר גלם
                             System.out.println("Added '" + rm.getName() + "' to the product's formulation.");
-                        } else {
-                            System.out.println("Error: Raw Material '" + rmName + "' not found.");
+                        } else
+                        {
+                            System.out.println("Error: Raw Material '" + rawName + "' not found.");
                         }
                     }
 
-                    // ולידציה: מוודאים שיש לפחות חומר גלם אחד
-                    if (rawMaterialsCount > 0) {
+                    // ensure there is atleast 1 raw material
+                    if (rawMaterialsCount > 0)
+                    {
                         manager.addProduct(p);
                         System.out.println("Product line '" + pName + "' created and added to inventory.");
                     } else {
@@ -247,7 +274,8 @@ public class Menu {
 
                 case "2": // לוגיקת המחיקה החדשה
                     String delName = readString("Enter product name to delete: ");
-                    if (manager.deleteProduct(delName)) {
+                    if (manager.deleteProduct(delName))
+                    {
                         System.out.println("Product '" + delName + "' was successfully deleted from inventory.");
                     } else {
                         System.out.println("Error: Product '" + delName + "' not found in inventory.");
@@ -265,7 +293,8 @@ public class Menu {
 
                         System.out.println("Batch added successfully to " + toAddBatch.getName() + ".");
                         System.out.println("Updated Total Stock: " + manager.getProductTotalStock(toAddBatch));
-                    } else {
+                    } else
+                    {
                         System.out.println("Product not found.");
                     }
                     break;
@@ -314,8 +343,7 @@ public class Menu {
                     double price = readDouble("Enter Purchase Price: ");
                     String lName = readString("Enter Material Name: ");
 
-                    LiquidRawMaterial liquid = new LiquidRawMaterial(sNum, qty, LocalDateTime.now().plusMonths(3), price, qty, 5.0, "Tank");
-                    liquid.setName(lName);
+                    LiquidRawMaterial liquid = new LiquidRawMaterial(lName, sNum, qty, LocalDateTime.now().plusMonths(3), price, qty, 5.0, "Tank");
                     manager.addRawMaterial(liquid);
                     System.out.println("Liquid material '" + lName + "' added.");
                     break;
@@ -325,8 +353,7 @@ public class Menu {
                     double priceS = readDouble("Enter Purchase Price: ");
                     String sName = readString("Enter Material Name: ");
 
-                    SolidRawMaterial solid = new SolidRawMaterial(sNumS, qtyS, LocalDateTime.now().plusMonths(6), priceS, qtyS, "Pallet", false);
-                    solid.setName(sName);
+                    SolidRawMaterial solid = new SolidRawMaterial(sName, sNumS, qtyS, LocalDateTime.now().plusMonths(6), priceS, qtyS, "Pallet", false);
                     manager.addRawMaterial(solid);
                     System.out.println("Solid material '" + sName + "' added.");
                     break;
@@ -403,7 +430,8 @@ public class Menu {
         return null;
     }
 
-    private RawMaterial searchRawMaterialByName(String name) {
+    private RawMaterial searchRawMaterialByName(String name)
+    {
         LinkedList inventory = manager.getRawMaterialsInventory();
         if (inventory == null || inventory.isEmpty()) return null;
 
@@ -418,18 +446,41 @@ public class Menu {
         return null;
     }
 
-    private String readString(String prompt) {
-        System.out.print(prompt);
+    private String readString(String s)
+    {
+        System.out.print(s);
         String input = scanner.nextLine().trim();
-        while (input.isEmpty()) {
+        while (input.isEmpty())
+        {
             input = scanner.nextLine().trim();
         }
-        return input;
+
+        return formatName(input);
     }
 
-    private int readInt(String prompt) {
-        while (true) {
-            System.out.print(prompt);
+    private String formatName(String input)
+    {
+        if (input == null || input.isEmpty()) // ensure the input is not empty
+        {
+            return input;
+        }
+
+        char firstLetter = input.charAt(0); //get first char from the string
+        firstLetter = Character.toUpperCase(firstLetter); // turn char to uppercase
+
+        if (input.length() == 1)
+        {
+            return String.valueOf(firstLetter); //converts a single char to string.
+        }
+
+        return firstLetter + input.substring(1).toLowerCase();
+    }
+
+    private int readInt(String s)
+    {
+        while (true)
+        {
+            System.out.print(s);
             try {
                 return Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
@@ -438,14 +489,27 @@ public class Menu {
         }
     }
 
-    private double readDouble(String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            try {
+    private double readDouble(String s)
+    {
+        while (true)
+        {
+            System.out.print(s);
+            try
+            {
                 return Double.parseDouble(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
                 System.out.println("Error: Please enter a valid decimal number.");
             }
         }
+    }
+
+    public static void clearScreen()
+    {
+        System.out.println();
+        System.out.println();
+
+        System.out.println("❖================▽▼▽================❖");
+
+        System.out.println();
     }
 }

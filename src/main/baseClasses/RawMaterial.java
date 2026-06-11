@@ -11,8 +11,9 @@ public abstract class RawMaterial implements Valuable
     private double purchasePrice;
 
 
-    public RawMaterial(int serialNumber, double quantityInStock,LocalDateTime expirationDate, double purchasePrice)      //full constructor
+    public RawMaterial(String name, int serialNumber, double quantityInStock,LocalDateTime expirationDate, double purchasePrice)      //full constructor
     {
+        this.name = name;
         this.serialNumber = serialNumber;
         this.quantityInStock = quantityInStock;
         this.expirationDate = expirationDate;
@@ -53,7 +54,7 @@ public abstract class RawMaterial implements Valuable
 
     public double calcFinalValue()      //calculate price of ALL units in stock
     {
-        return (purchasePrice * quantityInStock) * (1 + TAX_PERCENT);
+        return (purchasePrice * quantityInStock);
     }
 
     public double getBasePrice()        //returns price per unit
@@ -123,17 +124,16 @@ public abstract class RawMaterial implements Valuable
     public String toString()
     {
         LocalDateTime date = this.getExpirationDate();
-        return "RawMaterial {" +
-                "name: " + name + "/" +
-                "serialNumber: " + serialNumber +
-                ", quantityInStock: " + quantityInStock +
-                ", expirationDate: " + date.getDayOfMonth() + "/"
+        return
+                "name: " + name +
+                " | serialNumber: " + serialNumber +
+                " | quantityInStock: " + quantityInStock +
+                " | expirationDate: " + date.getDayOfMonth() + "/"
                                     + date.getMonthValue() + "/"
                                     + date.getYear() + " "
                                     + date.getHour() + ":"
                                     + date.getMinute() +
-                ", purchasePrice: " + purchasePrice +
-                ", expired: " + isExpired() +
-                '}';
+                " | purchasePrice: " + purchasePrice +
+                " | expired: " + isExpired();
     }
 }

@@ -89,6 +89,11 @@ public class MyBST
 
     private TreeNode deleteRec(TreeNode root, int clientID)
     {
+        if(root == null)
+        {
+            return null;
+        }
+        
         // Find the target node
         if(clientID < root.getData().getClientID())
             root.setLeft(deleteRec(root.getLeft(), clientID));

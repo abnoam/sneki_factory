@@ -254,19 +254,20 @@ public class FactoryManager
         catalogTable[0][0] = "Product Name";
         catalogTable[0][1] = "Serial Number";
         catalogTable[0][2] = "Price";
-        catalogTable[0][3] = "Weight (Grams)";
+        catalogTable[0][3] = "Weight (Grams/Liters)";
 
         main.dataStructures.LinkedNode current = productsInventory.getFirst();
         int row = 1;
         int dummySKU = 1000;
 
         // מילוי המערך הדו-מימדי מתוך האובייקטים
-        while (current != null) {
+        while (current != null)
+        {
             Product p = (Product) current.getData();
 
             catalogTable[row][0] = p.getName();
             catalogTable[row][1] = String.valueOf(p.getSerialNumber());
-            catalogTable[row][2] = String.format("%.2f", p.getProductionCost());
+            catalogTable[row][2] = String.format("%.2f", p.calcFinalValue());
             catalogTable[row][3] = String.format("%.2f", p.getWeight());
 
             row++;

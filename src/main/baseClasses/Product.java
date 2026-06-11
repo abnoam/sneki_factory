@@ -24,7 +24,7 @@ public class Product implements Valuable
      * @param weight            The weight of the product in kg.
      * @param initialMaterials  An initial list of raw materials.
      */
-    public Product(String name, double productionCost, LocalDateTime expiryDate, double weight, RawMaterial[] initialMaterials) // full constructor
+    public Product(String name, double productionCost, LocalDateTime expiryDate, double weight, RawMaterial[] initialMaterials,int serialNumber) // full constructor
     {
         this.name = name;
         this.productionCost = productionCost;
@@ -32,7 +32,7 @@ public class Product implements Valuable
         this.weight = weight;
         this.rawMaterials = new LinkedList(); // inits an empty list
         this.batches = new StackAsList(); // inits empty batch stack
-        this.serialNumber = 0;
+        this.serialNumber = serialNumber;
 
         if (initialMaterials != null)
         {

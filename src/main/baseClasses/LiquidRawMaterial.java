@@ -7,9 +7,9 @@ public class LiquidRawMaterial extends RawMaterial
     private double storageTemperature;
     private String containerType;
 
-    public LiquidRawMaterial(int serialNumber,double quantityInStock, LocalDateTime expirationDate,double purchasePrice,double volumeInLiters,double storageTemperature,String containerType)
+    public LiquidRawMaterial(String name, int serialNumber,double quantityInStock, LocalDateTime expirationDate,double purchasePrice,double volumeInLiters,double storageTemperature,String containerType)
     {
-        super(serialNumber,quantityInStock,expirationDate,purchasePrice);
+        super(name, serialNumber,quantityInStock,expirationDate,purchasePrice);
         this.volumeInLiters = volumeInLiters;
         this.storageTemperature = storageTemperature;
         this.containerType = containerType;
@@ -53,6 +53,11 @@ public class LiquidRawMaterial extends RawMaterial
     public void setContainerType(String containerType)
     {
         this.containerType = containerType;
+    }
+
+    public String toString()
+    {
+        return "Liquid rawMaterial - " + super.toString()  + " | Volume in Liters: " + volumeInLiters;
     }
 
 }

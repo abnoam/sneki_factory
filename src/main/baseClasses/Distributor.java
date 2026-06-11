@@ -18,6 +18,7 @@ public class Distributor extends Client
     {
         super(clientID, name);
         this.distributionArea = distributionArea;
+        this.licenseNumber =licenseNumber;
         this.distributionPrice = distributionPrice;
         this.lastShipmentDate = null;
     }

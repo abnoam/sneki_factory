@@ -36,7 +36,7 @@ public class Order {
             this.productsList.addLast(product);
         } else
         {
-            throw new IllegalArgumentException("main.baseClasses.Product cannot be null.");
+            throw new IllegalArgumentException("Product cannot be null.");
         }
     }
 
