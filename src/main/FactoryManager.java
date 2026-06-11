@@ -238,4 +238,53 @@ public class FactoryManager
 
         return product.getTotalStock();
     }
+
+    public void printProductCatalogMatrix() {
+        if (productsInventory == null || productsInventory.isEmpty()) {
+            System.out.println("Inventory is empty. No products to display.");
+            return;
+        }
+
+        int size = productsInventory.size();
+
+        // יצירת מערך דו-מימדי: שורות = מספר המוצרים + 1 (לכותרות), עמודות = 4
+        String[][] catalogTable = new String[size + 1][4];
+
+        // הכנסת כותרות לשורה הראשונה
+        catalogTable[0][0] = "Product Name";
+        catalogTable[0][1] = "Serial Number";
+        catalogTable[0][2] = "Price";
+        catalogTable[0][3] = "Weight (Grams)";
+
+        main.dataStructures.LinkedNode current = productsInventory.getFirst();
+        int row = 1;
+        int dummySKU = 1000;
+
+        // מילוי המערך הדו-מימדי מתוך האובייקטים
+        while (current != null) {
+            Product p = (Product) current.getData();
+
+            catalogTable[row][0] = p.getName();
+            catalogTable[row][1] = String.valueOf(p.getSerialNumber());
+            catalogTable[row][2] = String.format("%.2f", p.getProductionCost());
+            catalogTable[row][3] = String.format("%.2f", p.getWeight());
+
+            row++;
+            current = current.getNext();
+        }
+
+        // הדפסה טבלאית ומעוצבת של המערך הדו-מימדי
+        System.out.println("\n=== PRODUCT CATALOG (2D ARRAY) ===");
+        for (int i = 0; i < catalogTable.length; i++) {
+            // עיצוב עמודות קבוע כדי שייראה כמו טבלה
+                System.out.printf("%-20s | %-10s | %-10s | %-10s\n",
+                        catalogTable[i][0], catalogTable[i][1], catalogTable[i][2], catalogTable[i][3]);
+
+
+            // קו מפריד אחרי הכותרות
+            if (i == 0) {
+                System.out.println("-------------------------------------------------------------");
+            }
+        }
+    }
 }

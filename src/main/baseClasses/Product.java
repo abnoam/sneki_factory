@@ -12,6 +12,7 @@ public class Product implements Valuable
     private double productionCost;
     private LocalDateTime expiryDate;
     private double weight;
+    private int serialNumber;
     private LinkedList rawMaterials;
     private StackAsList batches;
 
@@ -31,6 +32,7 @@ public class Product implements Valuable
         this.weight = weight;
         this.rawMaterials = new LinkedList(); // inits an empty list
         this.batches = new StackAsList(); // inits empty batch stack
+        this.serialNumber = 0;
 
         if (initialMaterials != null)
         {
@@ -55,6 +57,7 @@ public class Product implements Valuable
         this.name = name;
         this.productionCost = productionCost;
         this.weight = weight;
+        this.serialNumber = 0;
         this.expiryDate = LocalDateTime.now(); // Defaults to current date
         this.rawMaterials = new LinkedList(); // inits an empty list
         this.batches = new StackAsList(); //inits empty batch stack
@@ -273,5 +276,15 @@ public class Product implements Valuable
         double costWithTax = this.calcFinalValue(); // get total production cost
         double marginFactor = targetProfitPercentage / 100.0; // calc requested profit percentage in dicimal factor
         return costWithTax / (1.0 - marginFactor); // calc the target price using: TotalCost/(1 - Margin Factor)
+    }
+
+    public int getSerialNumber()
+    {
+        return this.serialNumber;
+    }
+
+    public void setSerialNumber(int serialNumber)
+    {
+        this.serialNumber = serialNumber;
     }
 }

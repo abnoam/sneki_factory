@@ -24,6 +24,7 @@ public class Menu {
             System.out.println("3. Inventory & Batches Management");
             System.out.println("4. Raw Materials Management");
             System.out.println("5. Distributor Management");
+            System.out.println("6. Print Product Catalog");
             System.out.println("0. Exit");
 
             String choice = readString("Select an option: ");
@@ -34,6 +35,7 @@ public class Menu {
                 case "3": inventoryMenu(); break;
                 case "4": rawMaterialsMenu(); break;
                 case "5": distributorMenu(); break;
+                case "6": manager.printProductCatalogMatrix(); break;
                 case "0":
                     System.out.println("Shutting down the system. Goodbye!");
                     running = false;
@@ -205,10 +207,13 @@ public class Menu {
 
             switch (choice) {
                 case "1":
+                    int sNum = readInt("Enter Serial Number: "); // קליטת המק"ט
                     String pName = readString("Enter product name: ");
                     double cost = readDouble("Enter production cost: ");
                     double weight = readDouble("Enter product weight: ");
+
                     Product p = new Product(pName, cost, weight);
+                    p.setSerialNumber(sNum); // עדכון המק"ט במוצר
 
                     System.out.println("--- Assigning Raw Materials to " + pName + " ---");
                     boolean addingMaterials = true;
