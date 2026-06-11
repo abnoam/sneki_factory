@@ -93,14 +93,20 @@ public class Main
         // ==========================================
 
         Client client1 = new Client(1, "Noam");
-
+        Client tempClient = new Client(99, "Agam");
         Distributor distributor = new Distributor(2, "Shufersal Distributor",
                                                    Distributor.Region.CENTER, "2025", 1500);
 
         manager.addClient(client1);
+        manager.addClient(tempClient);
         manager.addClient(distributor);
 
         System.out.println("\n=== CLIENT TREE (BST) ===");
+        manager.printClients();
+
+        System.out.println("\nDeleting client ID: " + tempClient.getClientID() + "\n");
+        manager.deleteClient(tempClient.getClientID());
+        System.out.println("=== CLIENT TREE AFTER DELETE ===");
         manager.printClients();
 
         // ==========================================
@@ -122,10 +128,11 @@ public class Main
         System.out.println(manager.processNextOrder());
 
         // ==========================================
-        // LINKED LIST DEMO
+        // 2D ARRAY & LINKED LIST
         // ==========================================
 
         manager.printProductCatalogMatrix();
+
 
 
         // ==========================================
@@ -133,6 +140,25 @@ public class Main
         // ==========================================
 
         System.out.println("\n=== EXCEPTION HANDLING ===");
+        try
+        {
+            System.out.println("Attempting to add a null Product to order1...");
+            order1.addProduct(null);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Caught Exception in Order: " + e.getMessage() + "\n");
+        }
+
+        try
+        {
+            System.out.println("Attempting to add a null Order to Client1... ");
+            client1.addOrder(null);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Caught Exception in Client: " + e.getMessage());
+        }
 
 
 

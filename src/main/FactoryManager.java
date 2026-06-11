@@ -239,7 +239,8 @@ public class FactoryManager
         return product.getTotalStock();
     }
 
-    public void printProductCatalogMatrix() {
+    public void printProductCatalogMatrix()
+    {
         if (productsInventory == null || productsInventory.isEmpty()) {
             System.out.println("Inventory is empty. No products to display.");
             return;
