@@ -118,7 +118,8 @@ public class Main
         order1.addProduct(bamba);
         order1.addProduct(veg_oil);
 
-        manager.addOrder(order1);
+        manager.addOrder(order1); // adds order to factory order queue
+        client1.addOrder(order1); // adds order to the client queue
 
         System.out.println("\n=== ORDERS QUEUE ===");
         System.out.println("Next Order:");

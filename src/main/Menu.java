@@ -93,7 +93,6 @@ public class Menu {
                 case "2":
                     int idToDel = readInt("Enter Client ID to delete: ");
                     manager.deleteClient(idToDel);
-                    System.out.println("Delete operation executed.");
                     break;
                 case "3":
                     int idToEdit = readInt("Enter Client ID to edit: ");
