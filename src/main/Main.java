@@ -104,14 +104,9 @@ public class Main
         System.out.println("\n=== CLIENT TREE (BST) ===");
         manager.printClients();
 
-        System.out.println("\n=== TESTING CLIENT DELETION ===");
-        System.out.println("Attempting to delete client ID: " + client1.getClientID() + " (who has an order)...\n");
-        manager.deleteClient(client1.getClientID());
-        
-        System.out.println("\nAttempting to delete client ID: " + tempClient.getClientID() + " (who has NO orders)...\n");
+        System.out.println("\nDeleting client ID: " + tempClient.getClientID() + "\n");
         manager.deleteClient(tempClient.getClientID());
-        
-        System.out.println("\n=== CLIENT TREE AFTER DELETION ATTEMPTS ===");
+        System.out.println("=== CLIENT TREE AFTER DELETE ===");
         manager.printClients();
 
         // ==========================================

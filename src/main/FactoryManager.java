@@ -62,20 +62,20 @@ public class FactoryManager
         
         if (client == null)
         {
-            System.out.println("❌ Error: Client with ID " + clientID + " not found.");
+            System.out.println("Client with ID " + clientID + " not found.");
             return;
         }
         
         if (!client.getOrdersQueue().isEmpty())
         {
-            System.out.println("❌ Error: Cannot delete client \"" + client.getName() + 
+            System.out.println("Cannot delete client \"" + client.getName() + 
                              "\" (ID: " + clientID + "). Client still has " + 
                              client.getOrdersQueue().size() + " pending order(s).");
             return;
         }
         
         clientsTree.delete(clientID);
-        System.out.println("✓ Client \"" + client.getName() + "\" (ID: " + clientID + ") has been successfully deleted.");
+        System.out.println("Client \"" + client.getName() + "\" (ID: " + clientID + ") has been successfully deleted.");
     }
 
     public void printClients()
