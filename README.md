@@ -64,7 +64,8 @@ The project demonstrates core Object-Oriented Programming principles and data st
 
 ## 🏗️ Architecture
 
-```text
+67
+```text 
 main.baseClasses.Client
  ├── main.baseClasses.Distributor
 
