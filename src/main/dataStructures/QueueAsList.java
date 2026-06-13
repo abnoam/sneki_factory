@@ -58,4 +58,8 @@ public class QueueAsList implements  MyQueue
         }
         return this.front.getData();
     }
+
+    public void printQueue()
+    {
+    }
 }

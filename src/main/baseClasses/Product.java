@@ -15,7 +15,6 @@ public class Product implements Valuable
     private int serialNumber;
     private LinkedList rawMaterials;
     private StackAsList batches;
-
     /**
      * Full constructor for a new Product
      * @param name              The name of the product.
@@ -33,7 +32,6 @@ public class Product implements Valuable
         this.rawMaterials = new LinkedList(); // inits an empty list
         this.batches = new StackAsList(); // inits empty batch stack
         this.serialNumber = serialNumber;
-
         if (initialMaterials != null)
         {
             for (RawMaterial material : initialMaterials)

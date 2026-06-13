@@ -31,12 +31,9 @@ public class Order {
      */
     public void addProduct(Product product,int quantity)
     {
-        if (product != null)
+        if(product != null && quantity > 0)
         {
-            this.productsList.addLast(product);
-        } else
-        {
-            throw new IllegalArgumentException("Product cannot be null.");
+            productsList.addLast(new OrderProduct(product, quantity));
         }
     }
 
@@ -62,9 +59,10 @@ public class Order {
        LinkedNode current = this.productsList.getFirst();
        while (current != null)
        {
-           Product p = (Product) current.getData();
+           OrderProduct op = (OrderProduct) current.getData();
+           Product p = op.getProduct();
 
-           System.out.println("- " + p.getName() + " (" + p.getWeight() + "kg ): " + p.getBasePrice() + " " + Valuable.CURRENCY);
+           System.out.println("- " + p.getName() + " (" + p.getWeight() + "g/l ): " + p.getBasePrice() + " " + Valuable.CURRENCY);
 
            subTotal += p.getBasePrice();
            current = current.getNext();
@@ -114,16 +112,42 @@ public class Order {
         this.orderDate = orderDate;
     }
 
+    public void printOrderDetails()
+    {
+        LocalDateTime date = this.getOrderDate();
+        System.out.print("Customer: " + client.getName() + " | " );
+        printOrder();
+    }
+
+
     public String toString()
     {
         LocalDateTime date = this.getOrderDate();
-        return "Order #" + getOrderId() + " | Customer: " + getClient().getName() + " | Date: "
+        return "Order #" + getOrderId() +  " | Customer: " + getClient().getName() + " | Products: " + (productsList != null ? productsList.size() : 0) + " | Date: "
                                                                                             + date.getDayOfMonth() + "/"
                                                                                             + date.getMonthValue() + "/"
                                                                                             + date.getYear() + " "
                                                                                             + date.getHour() + ":"
                                                                                             + date.getMinute();
     }
+
+    public void printOrder()
+    {
+        LocalDateTime date = this.getOrderDate();
+        System.out.println("Order #" + orderID +
+                " | Items: " + (productsList != null ? productsList.size() : 0) +
+                " | Date: " + date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear() + " " + date.getHour() + ":" + date.getMinute());
+
+        System.out.println("Products List:");
+        if (productsList != null) {
+            LinkedNode current = productsList.getFirst();
+            while (current != null) {
+                System.out.println(current.getData().toString());
+                current = current.getNext();
+            }
+        }
+    }
+
 
 }
 

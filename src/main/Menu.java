@@ -133,57 +133,150 @@ public class Menu {
             String choice = readString("Select an option: ");
 
             switch (choice) {
+//                case "1":
+//                    int clientId = readInt("Enter Client ID for this order: ");
+//                    Client client = manager.findClient(clientId);
+//
+//                    if (client != null) {
+//                        int orderId = manager.getNextOrderID();
+//                        Order newOrder = new Order(client, LocalDateTime.now(), orderId);
+//                        int productsAdded = 0; // Counter to track if order is empty
+//
+//                        boolean addingProducts = true;
+//                        System.out.println("--- Adding Products to Order #" + orderId + " ---");
+//
+//                        while (addingProducts)
+//                        {
+//                            String pName = readString("Enter product name to add (or type 'done' to finish): ");
+//
+//                            if (pName.equalsIgnoreCase("done")) {
+//                                addingProducts = false;
+//                                continue;
+//                            }
+//
+//                            Product p = searchProductByName(pName);
+//                            if (p != null) {
+//                                int qty = readInt("Enter quantity for " + pName + ": ");
+//
+//                                if (manager.sellProduct(p, qty)) {
+//                                    for (int i = 0; i < qty; i++) {
+//                                        newOrder.addProduct(p , qty);
+//                                    }
+//                                    productsAdded += qty;
+//                                    System.out.println(qty + " units of '" + pName + "' added to the order.");
+//                                } else {
+//                                    System.out.println("Error: Not enough stock in Batches. Available: " + manager.getProductTotalStock(p));
+//                                }
+//                            } else {
+//                                System.out.println("Error: Product '" + pName + "' not found in inventory.");
+//                            }
+//                        }
+//
+//                        // Validation: Check if order is empty
+//                        if (productsAdded > 0) {
+//                            manager.addOrder(newOrder);
+//                            client.addOrder(newOrder);
+//                            System.out.println("Order #" + orderId + " finalized successfully for " + client.getName() + ".");
+//                        } else {
+//                            System.out.println("Order creation cancelled: No products were added. The empty order has been deleted.");
+//                        }
+//
+//                    } else {
+//                        System.out.println("Error: Client not found. Cannot create order.");
+//                    }
+//                    break;
                 case "1":
+
                     int clientId = readInt("Enter Client ID for this order: ");
+
                     Client client = manager.findClient(clientId);
 
-                    if (client != null) {
+                    if (client != null)
+                    {
                         int orderId = manager.getNextOrderID();
+
                         Order newOrder = new Order(client, LocalDateTime.now(), orderId);
-                        int productsAdded = 0; // Counter to track if order is empty
+
+                        int productsAdded = 0;
 
                         boolean addingProducts = true;
-                        System.out.println("--- Adding Products to Order #" + orderId + " ---");
 
-                        while (addingProducts) {
+                        System.out.println(
+                                "\n--- Adding Products to Order #"
+                                        + orderId
+                                        + " ---");
+
+                        while (addingProducts)
+                        {
                             String pName = readString("Enter product name to add (or type 'done' to finish): ");
 
-                            if (pName.equalsIgnoreCase("done")) {
+                            if (pName.equals("Done"))
+                            {
                                 addingProducts = false;
                                 continue;
                             }
 
                             Product p = searchProductByName(pName);
-                            if (p != null) {
-                                int qty = readInt("Enter quantity for " + pName + ": ");
 
-                                if (manager.sellProduct(p, qty)) {
-                                    for (int i = 0; i < qty; i++) {
-                                        newOrder.addProduct(p);
-                                    }
-                                    productsAdded += qty;
-                                    System.out.println(qty + " units of '" + pName + "' added to the order.");
-                                } else {
-                                    System.out.println("Error: Not enough stock in Batches. Available: " + manager.getProductTotalStock(p));
+                            if (p != null)
+                            {
+                                int qty = readInt(
+                                                "Enter quantity for "
+                                                        + pName
+                                                        + ": ");
+
+                                if (qty > 0)
+                                {
+                                    newOrder.addProduct(p, qty);
+
+                                    productsAdded++;
+
+                                    System.out.println(qty
+                                                    + " units of '"
+                                                    + pName
+                                                    + "' added to the order.");
                                 }
-                            } else {
-                                System.out.println("Error: Product '" + pName + "' not found in inventory.");
+                                else
+                                {
+                                    System.out.println(
+                                            "Quantity must be greater than zero.");
+                                }
+                            }
+                            else
+                            {
+                                System.out.println(
+                                        "Error: Product '"
+                                                + pName
+                                                + "' not found in inventory.");
                             }
                         }
 
-                        // Validation: Check if order is empty
-                        if (productsAdded > 0) {
+                        if (productsAdded > 0)
+                        {
                             manager.addOrder(newOrder);
                             client.addOrder(newOrder);
-                            System.out.println("Order #" + orderId + " finalized successfully for " + client.getName() + ".");
-                        } else {
-                            System.out.println("Order creation cancelled: No products were added. The empty order has been deleted.");
-                        }
 
-                    } else {
-                        System.out.println("Error: Client not found. Cannot create order.");
+                            System.out.println(
+                                    "\nOrder #"
+                                            + orderId
+                                            + " created successfully for "
+                                            + client.getName()
+                                            + ".");
+                        }
+                        else
+                        {
+                            System.out.println(
+                                    "\nOrder creation cancelled: No products were added.");
+                        }
                     }
+                    else
+                    {
+                        System.out.println(
+                                "Error: Client not found.");
+                    }
+
                     break;
+
                 case "2":
                     Order processed = manager.processNextOrder();
                     if (processed != null) {
@@ -196,7 +289,8 @@ public class Menu {
                     Order peeked = manager.peekNextOrder();
                     if (peeked != null) {
                         System.out.println("Next pending order: " + peeked.toString());
-                    } else {
+                    } else
+                    {
                         System.out.println("No pending orders.");
                     }
                     break;
@@ -342,7 +436,7 @@ public class Menu {
                     double price = readDouble("Enter Purchase Price: ");
                     String lName = readString("Enter Material Name: ");
 
-                    LiquidRawMaterial liquid = new LiquidRawMaterial(lName, sNum, qty, LocalDateTime.now().plusMonths(3), price, qty, 5.0, "Tank");
+                    LiquidRawMaterial liquid = new LiquidRawMaterial(lName, sNum, qty, LocalDateTime.now().plusMonths(3), price, 5.0);
                     manager.addRawMaterial(liquid);
                     System.out.println("Liquid material '" + lName + "' added.");
                     break;

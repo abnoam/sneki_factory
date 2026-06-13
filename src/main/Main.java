@@ -19,8 +19,7 @@ public class Main
         // ==========================================
 
         RawMaterial corn = new SolidRawMaterial("Corn", 1001, 500, LocalDateTime.now().plusMonths(12),
-                                                15, 250,
-                                                "Pallet", true);
+                                                15, 250);
 
         RawMaterial oil = new LiquidRawMaterial("Vegetable Oil", 1002, 800, LocalDateTime.now().plusMonths(6),
                                                 10, 500);
@@ -29,10 +28,7 @@ public class Main
 
         RawMaterial nuts = new SolidRawMaterial("nuts", 1003,
                                                 67, LocalDateTime.now().plusMonths(7),
-                                                10.67, 500,
-                                                "Pallet", false);
-
-
+                                                10.67, 500);
 
         manager.addRawMaterial(corn);
         manager.addRawMaterial(oil);
@@ -102,9 +98,10 @@ public class Main
         System.out.println("\n=== CLIENT TREE (BST) ===");
         manager.printClients();
 
-        System.out.println("\nDeleting client ID: " + tempClient.getClientID() + "\n");
+        System.out.println("\nDeleting client ID: " + tempClient.getClientID());
         manager.deleteClient(tempClient.getClientID());
-        System.out.println("=== CLIENT TREE AFTER DELETE ===");
+
+        System.out.println("\n=== CLIENT TREE AFTER DELETE ===");
         manager.printClients();
 
         // ==========================================
@@ -143,8 +140,6 @@ public class Main
 
         manager.printProductCatalogMatrix();
 
-
-
         // ==========================================
         // EXCEPTIONS DEMO
         // ==========================================
@@ -153,7 +148,7 @@ public class Main
         try
         {
             System.out.println("Attempting to add a null Product to order1...");
-            order1.addProduct(null);
+            order1.addProduct(null, 0);
         }
         catch (Exception e)
         {
@@ -170,12 +165,9 @@ public class Main
             System.out.println("Caught Exception in Client: " + e.getMessage());
         }
 
-
-
         System.out.println("\n❖================▽▼▽================❖");
         System.out.println("       DEMO COMPLETED");
         System.out.println("❖================▽▼▽================❖\n");
-
         Menu menu = new Menu(manager);
         menu.run();
     }

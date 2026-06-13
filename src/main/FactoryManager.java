@@ -64,7 +64,7 @@ public class FactoryManager
         {
             System.out.println("Client with ID " + clientID + " not found.");
             return;
-        }
+        }  //67
         
         if (!client.getOrdersQueue().isEmpty())
         {
@@ -106,8 +106,16 @@ public class FactoryManager
         {
             return null;
         }
+       // Order temp = ordersQueue.peek();
+        Order processed = (Order) ordersQueue.pull();
 
-        return (Order) ordersQueue.poll();
+        Client client = processed.getClient();
+        if (client != null && client.getOrdersQueue() != null && !client.getOrdersQueue().isEmpty())
+        {
+            client.getOrdersQueue().pull();
+        }
+
+        return processed;
     }
 
     public Order peekNextOrder()

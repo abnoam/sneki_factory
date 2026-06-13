@@ -1,4 +1,5 @@
 package main.baseClasses;
+import main.dataStructures.LinkedNode;
 import main.dataStructures.QueueAsList;
 
 
@@ -64,4 +65,5 @@ public class Client
     {
         return "Client #" + getClientID() + " | Name: " + getName() + " | Pending Orders: " + ordersQueue.size();
     }
+
 }

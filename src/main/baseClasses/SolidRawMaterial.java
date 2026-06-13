@@ -6,7 +6,8 @@ public class SolidRawMaterial extends RawMaterial
 {
     private double weightInKg;
 
-    public SolidRawMaterial(String name, int serialNumber, double quantityInStock, LocalDateTime expirationDate, double purchasePrice, double weightInKg, String palletArrangement, boolean isMoistureSensitive){
+    public SolidRawMaterial(String name, int serialNumber, double quantityInStock, LocalDateTime expirationDate, double purchasePrice, double weightInKg)
+    {
         super(name, serialNumber,quantityInStock,expirationDate,purchasePrice);
         this.weightInKg = weightInKg;
     }
@@ -22,22 +23,6 @@ public class SolidRawMaterial extends RawMaterial
     }
     public void setWeightInKg(double weightInKg){
         this.weightInKg=weightInKg;
-    }
-    public String getPalletArrangement()
-    {
-        return palletArrangement;
-    }
-    public void setPalletArrangement(String palletArrangement)
-    {
-        this.palletArrangement = palletArrangement;
-    }
-    public boolean isMoistureSensitive()
-    {
-        return isMoistureSensitive;
-    }
-    public void setMoistureSensitive(boolean isMoistureSensitive)
-    {
-        this.isMoistureSensitive = isMoistureSensitive;
     }
 
     public String toString()
