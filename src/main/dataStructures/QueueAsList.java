@@ -26,7 +26,7 @@ public class QueueAsList implements  MyQueue
         size++;
     }
 
-    public Object poll()
+    public Object pull()
     {
         if (this.front == null)
             return null;

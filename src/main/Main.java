@@ -23,8 +23,7 @@ public class Main
                                                 "Pallet", true);
 
         RawMaterial oil = new LiquidRawMaterial("Vegetable Oil", 1002, 800, LocalDateTime.now().plusMonths(6),
-                                                10, 500,
-                                                20, "Tank");
+                                                10, 500);
 
 
 
@@ -93,9 +92,8 @@ public class Main
         // ==========================================
 
         Client client1 = new Client(1, "Noam");
-        Client tempClient = new Client(99, "Agam");
-        Distributor distributor = new Distributor(2, "Shufersal Distributor",
-                                                   Distributor.Region.CENTER, "2025", 1500);
+        Client tempClient = new Client(99, "nahum nehemya robert chikel");
+        Distributor distributor = new Distributor(770, "Rafi Levi Distributor", Distributor.Region.CENTER, "2025", 1500);
 
         manager.addClient(client1);
         manager.addClient(tempClient);
@@ -115,18 +113,29 @@ public class Main
 
         Order order1 = new Order(client1, LocalDateTime.now(), manager.getNextOrderID());
 
-        order1.addProduct(bamba);
-        order1.addProduct(veg_oil);
+        order1.addProduct(bamba, 100);
+        order1.addProduct(veg_oil, 50);
 
+        System.out.println("\nCreating an order for: " + client1.getName());
         manager.addOrder(order1); // adds order to factory order queue
         client1.addOrder(order1); // adds order to the client queue
+        System.out.println(client1.toString());
+
+
+        System.out.println("\n=== ORDER INFO ===");
+        order1.generateInvoice();
+        order1.printOrderDetails();
+
+
+        System.out.println("\nAttempting to delete client with orders: ");
+        manager.deleteClient(client1.getClientID());
 
         System.out.println("\n=== ORDERS QUEUE ===");
         System.out.println("Next Order:");
         System.out.println(manager.peekNextOrder());
 
-        System.out.println("\nProcessing Order...");
-        System.out.println(manager.processNextOrder());
+        //System.out.println("\nProcessing Order...");
+        //System.out.println(manager.processNextOrder());
 
         // ==========================================
         // 2D ARRAY & LINKED LIST

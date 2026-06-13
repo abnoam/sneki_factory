@@ -29,7 +29,7 @@ public class Order {
      * Adds a single product to the order.
      * @param product The product to be added.
      */
-    public void addProduct(Product product)
+    public void addProduct(Product product,int quantity)
     {
         if (product != null)
         {

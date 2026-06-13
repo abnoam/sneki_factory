@@ -27,7 +27,7 @@ public class Client
 
     public Order processNextOrder()     //removes order from queue amd returns it
     {
-        return (Order) this.ordersQueue.poll();
+        return (Order) this.ordersQueue.pull();
     }
 
     public Order peekNextOrder()

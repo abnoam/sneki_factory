@@ -4,7 +4,7 @@ import main.baseClasses.*;
 import main.dataStructures.LinkedList;
 import main.dataStructures.LinkedNode;
 
-import java.util.Locale;
+
 import java.util.Scanner;
 import java.time.LocalDateTime;
 
@@ -352,7 +352,7 @@ public class Menu {
                     double priceS = readDouble("Enter Purchase Price: ");
                     String sName = readString("Enter Material Name: ");
 
-                    SolidRawMaterial solid = new SolidRawMaterial(sName, sNumS, qtyS, LocalDateTime.now().plusMonths(6), priceS, qtyS, "Pallet", false);
+                    SolidRawMaterial solid = new SolidRawMaterial(sName, sNumS, qtyS, LocalDateTime.now().plusMonths(6), priceS, qtyS);
                     manager.addRawMaterial(solid);
                     System.out.println("Solid material '" + sName + "' added.");
                     break;

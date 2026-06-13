@@ -4,7 +4,7 @@ public interface MyQueue
 {
     void offer(Object data);
 
-    Object poll();
+    Object pull();
     Object peek();
     boolean isEmpty();
     int size();
