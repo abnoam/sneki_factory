@@ -10,7 +10,7 @@ public class Main
     {
         FactoryManager manager = new FactoryManager();
 
-        System.out.println("\n❖================▽▼▽================❖");
+        System.out.println("❖================▽▼▽================❖");
         System.out.println("     FACTORY SYSTEM     ");
         System.out.println("❖================▽▼▽================❖\n");
 
@@ -43,6 +43,7 @@ public class Main
 
         RawMaterial[] materials_for_bamba = {corn, oil};
         RawMaterial[] materials_for_peanut_butter = {oil, nuts};
+        RawMaterial[] Corn = {corn};
 
         Product bamba = new Product(
                 "Bamba",
@@ -52,11 +53,17 @@ public class Main
                 materials_for_bamba , 1001);
 
         Product veg_oil = new Product(
-                "Sunflower oil",
+                "Vegetable oil",
                 10,
                 LocalDateTime.now().plusYears(3),
                 1,
                 materials_for_peanut_butter, 1002);
+        Product packed_corn = new Product(
+                "Packed Corn",
+                10,
+                LocalDateTime.now().plusYears(3),
+                1,
+                Corn, 1003);
 
         // ==========================================
         // STACK DEMO (BATCHES)
@@ -70,6 +77,7 @@ public class Main
 
         manager.addProduct(bamba);
         manager.addProduct(veg_oil);
+        manager.addProduct(packed_corn);
 
         System.out.println("\n=== PRODUCT STOCK (STACK) ===");
         manager.printProductStock(bamba);
@@ -87,9 +95,9 @@ public class Main
         // BST DEMO
         // ==========================================
 
-        Client client1 = new Client(1, "Noam");
-        Client tempClient = new Client(99, "nahum nehemya robert chikel");
-        Distributor distributor = new Distributor(770, "Rafi Levi Distributor", Distributor.Region.CENTER, "2025", 1500);
+        Client client1 = new Client(676767, "Noam");
+        Client tempClient = new Client(123456, "nahum nehemya robert chikel");
+        Distributor distributor = new Distributor(770154, "Rafi Levi Distributor", "2025", 1500);
 
         manager.addClient(client1);
         manager.addClient(tempClient);
@@ -116,7 +124,7 @@ public class Main
         System.out.println("\nCreating an order for: " + client1.getName());
         manager.addOrder(order1); // adds order to factory order queue
         client1.addOrder(order1); // adds order to the client queue
-        System.out.println(client1.toString());
+        System.out.println(client1);
 
 
         System.out.println("\n=== ORDER INFO ===");

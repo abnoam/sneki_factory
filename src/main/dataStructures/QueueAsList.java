@@ -58,8 +58,14 @@ public class QueueAsList implements  MyQueue
         }
         return this.front.getData();
     }
-
     public void printQueue()
     {
+        LinkedNode current = front;
+
+        while(current != null)
+        {
+            System.out.println(current.getData());
+            current = current.getNext();
+        }
     }
 }

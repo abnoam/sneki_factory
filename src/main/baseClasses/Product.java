@@ -1,5 +1,6 @@
 package main.baseClasses;
 import main.dataStructures.LinkedList;
+import main.dataStructures.LinkedNode;
 import main.dataStructures.StackAsList;
 
 import java.time.LocalDateTime;
@@ -132,11 +133,35 @@ public class Product implements Valuable
         return rawMaterials;
     }
 
-    public void addBatch(Batch batch) // add batches according to batch expiry dates
+    public boolean  addBatch(Batch batch) // add batches according to batch expiry dates
     {
         if(batch == null)
         {
-            return;
+            return false;
+        }
+
+        int amountNeeded = batch.getQuantity();
+        LinkedNode currentMaterialNode = this.rawMaterials.getFirst();
+
+
+        while (currentMaterialNode != null)
+        {
+            RawMaterial rawMa = (RawMaterial) currentMaterialNode.getData();
+
+            if(rawMa.getQuantityInStock() < amountNeeded)
+            {
+                System.out.println("Error: Not enough '" + rawMa.getName() + "' in stock.");
+                return false;
+            }
+            currentMaterialNode = currentMaterialNode.getNext();
+        }
+
+        currentMaterialNode = this.rawMaterials.getFirst();
+        while(currentMaterialNode != null)
+        {
+            RawMaterial rawMa = (RawMaterial) currentMaterialNode.getData();
+            rawMa.useMaterial(amountNeeded);
+            currentMaterialNode = currentMaterialNode.getNext();
         }
 
         StackAsList temp = new StackAsList();
@@ -161,6 +186,7 @@ public class Product implements Valuable
         {
             batches.push(temp.pop());
         }
+        return true;
     }
 
     public Batch getClosestBatch()
@@ -172,12 +198,17 @@ public class Product implements Valuable
 
         return (Batch)batches.peek();
     }
+    public boolean isEnoughInStock(int amount)
+    {
+        return getTotalStock() >= amount;
+    }
 
-    public boolean sellFromStock(int amount)
+    public void sellFromStock(int amount)
     {
         if(amount <= 0)
         {
-            return false;
+            System.out.println("Amount Can't Be Zero Or Negative!");
+            return;
         }
 
         while(amount > 0 && !batches.isEmpty())
@@ -187,15 +218,13 @@ public class Product implements Valuable
             if(batch.getQuantity() > amount)
             {
                 batch.setQuantity(batch.getQuantity() - amount); // reduces the amount of the batch that has been sent to sell
-
-                return true;
+                return;
             }
 
             amount -= batch.getQuantity(); // removes the batch quantity from the wanted amount
 
             batches.pop(); //removes batch from stack.
         }
-        return amount == 0; // returns TRUE if wanted amount is sent.
     }
 
     public int getTotalStock() // calc total stock in the stack
@@ -243,12 +272,14 @@ public class Product implements Valuable
     public String toString()
     {
         LocalDateTime date = this.getExpiryDate();
+        String minuteStr = (date.getMinute() < 10 ? "0" : "") + date.getMinute();
+        String hourStr = (date.getHour() < 10 ? "0" : "") + date.getHour();
 
         return "Product: " + getName() + " | Cost: " + getProductionCost() + Valuable.CURRENCY + " | Weight: " + getWeight() + "kg | Expire: " + date.getDayOfMonth() + "/"
                                                                                                                                                + date.getMonthValue() + "/"
                                                                                                                                                + date.getYear() + " "
-                                                                                                                                               + date.getHour() + ":"
-                                                                                                                                               + date.getMinute();
+                                                                                                                                               + hourStr + ":"
+                                                                                                                                               + minuteStr;
     }
 
     // interface methods:
@@ -285,4 +316,40 @@ public class Product implements Valuable
     {
         this.serialNumber = serialNumber;
     }
+
+//    public boolean produceNewBatch(int batchQty, LocalDateTime expiryDate)
+//    {
+//        // 1. קודם בודקים אם יש מספיק מלאי מכל חומרי הגלם (לפי יחס 1:1)
+//        LinkedNode current = this.rawMaterials.getFirst();
+//        while (current != null)
+//        {
+//            RawMaterial rm = (RawMaterial) current.getData();
+//
+//            if (rm.getQuantity() < batchQty)
+//            {
+//                System.out.println("Error: Not enough " + rm.getName() + " in stock. Required: " + batchQty + ", Available: " + rm.getQuantity());
+//                return false; // עוצרים את הייצור - אין מספיק חומר גלם
+//            }
+//            current = current.getNext();
+//        }
+//
+//        // 2. אם הגענו לכאן, סימן שיש מספיק מהכל. עכשיו מורידים את הכמויות
+//        current = this.rawMaterials.getFirst();
+//        while (current != null)
+//        {
+//            RawMaterial rm = (RawMaterial) current.getData();
+//
+//            rm.setQuantity(rm.getQuantity() - batchQty); // הורדה של 1:1
+//
+//            current = current.getNext();
+//        }
+//
+//        // 3. יוצרים את האצווה החדשה ומכניסים למחסנית הממוינת שלך
+//        Batch newBatch = new Batch(batchQty, expiryDate);
+//        this.addBatch(newBatch);
+//
+//        return true; // הייצור הצליח
+//    }
+
 }
+

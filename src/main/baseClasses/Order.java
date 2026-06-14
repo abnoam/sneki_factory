@@ -62,9 +62,9 @@ public class Order {
            OrderProduct op = (OrderProduct) current.getData();
            Product p = op.getProduct();
 
-           System.out.println("- " + p.getName() + " (" + p.getWeight() + "g/l ): " + p.getBasePrice() + " " + Valuable.CURRENCY);
+           System.out.println("- " + p.getName() + " (" + p.getWeight() + "g/l ): " + p.getBasePrice() + " " + Valuable.CURRENCY + " X " + op.getQuantity());
 
-           subTotal += p.getBasePrice();
+           subTotal += p.getBasePrice() * op.getQuantity();
            current = current.getNext();
        }
 
@@ -115,28 +115,14 @@ public class Order {
     public void printOrderDetails()
     {
         LocalDateTime date = this.getOrderDate();
-        System.out.print("Customer: " + client.getName() + " | " );
-        printOrder();
-    }
+        String minuteStr = (date.getMinute() < 10 ? "0" : "") + date.getMinute();
+        String hourStr = (date.getHour() < 10 ? "0" : "") + date.getHour();
 
 
-    public String toString()
-    {
-        LocalDateTime date = this.getOrderDate();
-        return "Order #" + getOrderId() +  " | Customer: " + getClient().getName() + " | Products: " + (productsList != null ? productsList.size() : 0) + " | Date: "
-                                                                                            + date.getDayOfMonth() + "/"
-                                                                                            + date.getMonthValue() + "/"
-                                                                                            + date.getYear() + " "
-                                                                                            + date.getHour() + ":"
-                                                                                            + date.getMinute();
-    }
-
-    public void printOrder()
-    {
-        LocalDateTime date = this.getOrderDate();
         System.out.println("Order #" + orderID +
+                " | Customer: " + client.getName() +
                 " | Items: " + (productsList != null ? productsList.size() : 0) +
-                " | Date: " + date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear() + " " + date.getHour() + ":" + date.getMinute());
+                " | Date: " + date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear() + " " + hourStr + ":" + minuteStr);
 
         System.out.println("Products List:");
         if (productsList != null) {
@@ -149,39 +135,21 @@ public class Order {
     }
 
 
+    public String toString()
+    {
+        LocalDateTime date = this.getOrderDate();
+
+        String minuteStr = (date.getMinute() < 10 ? "0" : "") + date.getMinute();
+        String hourStr = (date.getHour() < 10 ? "0" : "") + date.getHour();
+
+        return "Order #" + getOrderId() +  " | Customer: " + getClient().getName() + " | Products: " + (productsList != null ? productsList.size() : 0) + " | Date: "
+                                                                                            + date.getDayOfMonth() + "/"
+                                                                                            + date.getMonthValue() + "/"
+                                                                                            + date.getYear() + " "
+                                                                                            + hourStr + ":"
+                                                                                            + minuteStr;
+    }
+
+   // public void
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//67//

@@ -1,10 +1,8 @@
 package main;
 
-import main.baseClasses.Order;
-import main.baseClasses.Client;
-import main.baseClasses.Product;
-import main.baseClasses.RawMaterial;
+import main.baseClasses.*;
 import main.dataStructures.LinkedList;
+import main.dataStructures.LinkedNode;
 import main.dataStructures.QueueAsList;
 import main.dataStructures.MyBST;
 
@@ -15,7 +13,7 @@ public class FactoryManager
 
     private QueueAsList ordersQueue;
 
-    private LinkedList productsInventory;
+    private LinkedList productsCatalog;
 
     private LinkedList rawMaterialsInventory;
 
@@ -27,7 +25,7 @@ public class FactoryManager
 
         ordersQueue = new QueueAsList();
 
-        productsInventory = new LinkedList();
+        productsCatalog = new LinkedList();
 
         rawMaterialsInventory = new LinkedList();
 
@@ -106,15 +104,29 @@ public class FactoryManager
         {
             return null;
         }
-       // Order temp = ordersQueue.peek();
-        Order processed = (Order) ordersQueue.pull();
 
+        Order processed = (Order) ordersQueue.peek();
         Client client = processed.getClient();
-        if (client != null && client.getOrdersQueue() != null && !client.getOrdersQueue().isEmpty())
-        {
-            client.getOrdersQueue().pull();
+        LinkedNode currentProductNode = processed.getProductsList().getFirst();
+        while (currentProductNode != null) {
+            OrderProduct op = (OrderProduct) currentProductNode.getData();
+            if (!op.getProduct().isEnoughInStock(op.getQuantity())){
+                System.out.println("\nNot enough " + op.getProduct().getName() + " in stock");
+                return null;
+            }
+            currentProductNode = currentProductNode.getNext();
         }
 
+         currentProductNode = processed.getProductsList().getFirst();
+         while (currentProductNode != null)
+         {
+             OrderProduct op = (OrderProduct) currentProductNode.getData();
+             sellProduct(op);
+             currentProductNode = currentProductNode.getNext();
+         }
+        ordersQueue.pull();
+        client.getOrdersQueue().pull();
+        System.out.println("\nOrder #" + processed.getOrderId() + " Processed\n");
         return processed;
     }
 
@@ -146,19 +158,19 @@ public class FactoryManager
     {
         if (product != null)
         {
-            productsInventory.addLast(product);
+            productsCatalog.addLast(product);
         }
     }
 
     public boolean deleteProduct(String name)
     {
-        if (productsInventory == null || productsInventory.isEmpty()) {
+        if (productsCatalog == null || productsCatalog.isEmpty()) {
             return false;
         }
 
         boolean found = false;
         LinkedList newInventory = new LinkedList();
-        main.dataStructures.LinkedNode current = productsInventory.getFirst();
+        main.dataStructures.LinkedNode current = productsCatalog.getFirst();
 
         while (current != null) {
             Product p = (Product) current.getData();
@@ -173,34 +185,34 @@ public class FactoryManager
 
         // אם מצאנו ומחקנו, נעדכן את הרשימה הראשית
         if (found) {
-            productsInventory = newInventory;
+            productsCatalog = newInventory;
         }
         return found;
     }
 
     public Product removeFirstProduct()
     {
-        if (productsInventory.isEmpty())
+        if (productsCatalog.isEmpty())
         {
             return null;
         }
 
-        return (Product) productsInventory.removeFirst();
+        return (Product) productsCatalog.removeFirst();
     }
 
     public Product getMiddleProduct()
     {
-        if (productsInventory.isEmpty())
+        if (productsCatalog.isEmpty())
         {
             return null;
         }
 
-        return (Product) productsInventory.getMiddle();
+        return (Product) productsCatalog.getMiddle();
     }
 
-    public LinkedList getProductsInventory()
+    public LinkedList getproductsCatalog()
     {
-        return productsInventory;
+        return productsCatalog;
     }
 
     // ==========================
@@ -234,14 +246,14 @@ public class FactoryManager
     // PRODUCT STOCK MANAGEMENT
     // ==========================
 
-    public boolean sellProduct(Product product, int quantity)
+    public void sellProduct(OrderProduct orderProduct)
     {
-        if (product == null)
+        if (orderProduct == null)
         {
-            return false;
+            return;
         }
 
-        return product.sellFromStock(quantity);
+        orderProduct.getProduct().sellFromStock(orderProduct.getQuantity());
     }
 
     public void printProductStock(Product product)
@@ -266,12 +278,12 @@ public class FactoryManager
 
     public void printProductCatalogMatrix()
     {
-        if (productsInventory == null || productsInventory.isEmpty()) {
+        if (productsCatalog == null || productsCatalog.isEmpty()) {
             System.out.println("Inventory is empty. No products to display.");
             return;
         }
 
-        int size = productsInventory.size();
+        int size = productsCatalog.size();
 
         // יצירת מערך דו-מימדי: שורות = מספר המוצרים + 1 (לכותרות), עמודות = 4
         String[][] catalogTable = new String[size + 1][4];
@@ -282,7 +294,7 @@ public class FactoryManager
         catalogTable[0][2] = "Price";
         catalogTable[0][3] = "Weight (Grams/Liters)";
 
-        main.dataStructures.LinkedNode current = productsInventory.getFirst();
+        main.dataStructures.LinkedNode current = productsCatalog.getFirst();
         int row = 1;
         int dummySKU = 1000;
 
@@ -313,5 +325,18 @@ public class FactoryManager
                 System.out.println("-------------------------------------------------------------");
             }
         }
+    }
+
+    public boolean isProductInCatalog(int serialNumber)
+    {
+        LinkedNode current = getproductsCatalog().getFirst();
+        while (current != null) {
+            Product p = (Product) current.getData();
+            if (p.getSerialNumber() == serialNumber) {
+                return true;
+            }
+            current = current.getNext();
+        }
+        return false;
     }
 }

@@ -124,6 +124,10 @@ public abstract class RawMaterial implements Valuable
     public String toString()
     {
         LocalDateTime date = this.getExpirationDate();
+
+        String minuteStr = (date.getMinute() < 10 ? "0" : "") + date.getMinute();
+        String hourStr = (date.getHour() < 10 ? "0" : "") + date.getHour();
+
         return
                 "name: " + name +
                 " | serialNumber: " + serialNumber +
@@ -131,8 +135,8 @@ public abstract class RawMaterial implements Valuable
                 " | expirationDate: " + date.getDayOfMonth() + "/"
                                     + date.getMonthValue() + "/"
                                     + date.getYear() + " "
-                                    + date.getHour() + ":"
-                                    + date.getMinute() +
+                                    + hourStr + ":"
+                                    + minuteStr +
                 " | purchasePrice: " + purchasePrice +
                 " | expired: " + isExpired();
     }

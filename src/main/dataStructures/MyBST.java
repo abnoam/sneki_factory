@@ -68,7 +68,7 @@ public class MyBST
 
     private void printInOrderRec(TreeNode root)
     {if (root != null)
-        { //67
+        {
         printInOrderRec(root.getLeft());
         System.out.println(root.getData().toString());
         printInOrderRec(root.getRight());

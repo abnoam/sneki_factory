@@ -32,13 +32,16 @@ public class Batch
     {
         LocalDateTime date = this.getExpiryDate();
 
+        String minuteStr = (date.getMinute() < 10 ? "0" : "") + date.getMinute();
+        String hourStr = (date.getHour() < 10 ? "0" : "") + date.getHour();
+
         return "Qty: "
                 + quantity
                 + " | Exp: "
                 + date.getDayOfMonth() + "/"
                 + date.getMonthValue() + "/"
                 + date.getYear() + " "
-                + date.getHour() + ":"
-                + date.getMinute();
+                + hourStr + ":"
+                + minuteStr;
     }
 }

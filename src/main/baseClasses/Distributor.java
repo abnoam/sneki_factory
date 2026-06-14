@@ -4,20 +4,14 @@ import java.time.LocalDateTime;
 
 public class Distributor extends Client
 {
-    public enum Region
-    {
-        NORTH, SOUTH, CENTER
-    }
 
-    private Region distributionArea;
     private double distributionPrice;
     private LocalDateTime lastShipmentDate;
     private String licenseNumber;
 
-    public Distributor(int clientID, String name, Region distributionArea, String licenseNumber, double distributionPrice )
+    public Distributor(int clientID, String name, String licenseNumber, double distributionPrice )
     {
         super(clientID, name);
-        this.distributionArea = distributionArea;
         this.licenseNumber =licenseNumber;
         this.distributionPrice = distributionPrice;
         this.lastShipmentDate = null;
@@ -26,15 +20,6 @@ public class Distributor extends Client
     public void recordNewShipment()
     {
         this.lastShipmentDate = LocalDateTime.now();
-    }
-
-    public Region getDistributionArea()
-    {
-        return distributionArea;
-    }
-    public void setDistributionArea(Region distributionArea)
-    {
-        this.distributionArea = distributionArea;
     }
 
     public String getLicenseNumber()
@@ -59,10 +44,24 @@ public class Distributor extends Client
     {
         this.distributionPrice = distributionPrice;
     }
+    private String printLastShipmentDate()
+    {
+        LocalDateTime date = this.getLastShipmentDate();
+
+        if(date == null)
+        {
+            return null;
+        }
+
+        String minuteStr = (date.getMinute() < 10 ? "0" : "") + date.getMinute();
+        String hourStr = (date.getHour() < 10 ? "0" : "") + date.getHour();
+
+        return date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear() + " " + hourStr + ":" + minuteStr;
+    }
 
     public String toString()
     {
-        return super.toString() + " | License: " + licenseNumber + " | Area: " + distributionArea + " | Last Shipment: " +
-                                                                    (lastShipmentDate != null ? lastShipmentDate: "Never");
+        return super.toString() + " | License: " + licenseNumber + " | Last Shipment: " +
+                                                                    (printLastShipmentDate() != null ? printLastShipmentDate(): "Never");
     }
 }

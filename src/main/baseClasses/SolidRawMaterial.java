@@ -10,6 +10,7 @@ public class SolidRawMaterial extends RawMaterial
     {
         super(name, serialNumber,quantityInStock,expirationDate,purchasePrice);
         this.weightInKg = weightInKg;
+
     }
     public int calcPackages()
     {

@@ -3,7 +3,7 @@ package main;
 import main.baseClasses.*;
 import main.dataStructures.LinkedList;
 import main.dataStructures.LinkedNode;
-
+import main.dataStructures.QueueAsList;
 
 import java.util.Scanner;
 import java.time.LocalDateTime;
@@ -19,7 +19,8 @@ public class Menu {
 
     public void run() {
         boolean running = true;
-        while (running) {
+        while (running)
+        {
             clearScreen();
             System.out.println("\n=== Sneki Factory - Main Menu ===");
             System.out.println("1. Client Management");
@@ -57,6 +58,42 @@ public class Menu {
                     clearScreen();
                     manager.printProductCatalogMatrix();
                 break;
+                case "67":
+                    System.out.print("\u001B[32m");
+                    System.out.println("""
+                    ███████╗███╗   ██╗███████╗██╗  ██╗██╗
+                    ██╔════╝████╗  ██║██╔════╝██║ ██╔╝██║
+                    ███████╗██╔██╗ ██║█████╗  █████╔╝ ██║
+                    ╚════██║██║╚██╗██║██╔══╝  ██╔═██╗ ██║
+                    ███████║██║ ╚████║███████╗██║  ██╗██║
+                    ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝
+                    
+                    """);
+
+
+                        System.out.println("===========================\n" +
+                                "       Version 67.67\n" +
+                                "Tested on 67 different bugs\n" +
+                                "   Successfully fixed: 1\n" +
+                                "===========================\n");
+                        System.out.println(" ██████╗                 ███████╗\n" +
+                                            "██╔════╝                  ╚════██║\n" +
+                                            "███████╗                     ██╔╝\n" +
+                                            "██╔═══██╗                   ██╔╝\n" +
+                                            "╚██████╔╝                   ██║\n" +
+                                            " ╚═════╝                    ╚═╝\n" +
+                                            "     \\                     /     \n" +
+                                            "      \\\\                 //\n" +
+                                            "       \\\\               //\n" +
+                                            "        \\\\      \uD83D\uDE00     //\n" +
+                                            "         \\\\    ╱│╲    //\n" +
+                                            "          \\\\  ╱ │ ╲  //\n" +
+                                            "           \\\\╱  │  ╲//\n" +
+                                            "               ╱ ╲\n" +
+                                            "              ╱   ╲\n" +
+                                            "\n");
+                    System.out.print("\u001B[0m");
+                break;
                 case "0":
                     clearScreen();
                     System.out.println("Shutting down the system. Goodbye!");
@@ -79,22 +116,37 @@ public class Menu {
             System.out.println("2. Delete Client");
             System.out.println("3. Edit Client Details");
             System.out.println("4. Print All Clients");
-            System.out.println("5. Back to Main Menu");
+            System.out.println("5. Show Client Orders");
+            System.out.println("6. Back to Main Menu");
 
             String choice = readString("Select an option: ");
 
-            switch (choice) {
-                case "1":
-                    int idToAdd = readInt("Enter new Client ID: ");
-                    String name = readString("Enter Client Name: ");
-                    manager.addClient(new Client(idToAdd, name));
-                    System.out.println("Client added successfully.");
+            switch (choice)
+            {
+                case "1": {
+                    int idToAdd = readInt("Enter new Client ID (6 digits): ");
+                    if (idToAdd <= 100000 || idToAdd >= 999999)
+                    {
+                        System.out.println("Error: Client ID must be exactly 6 digits.");
+                    }
+                    else if (manager.findClient(idToAdd) != null)
+                    {
+                        System.out.println("Error: Client ID already exists.");
+                    }
+                    else
+                    {
+                        String name = readString("Enter Client Name: ");
+                        manager.addClient(new Client(idToAdd, name));
+                        System.out.println("Client added successfully.");
+                    }
                     break;
-                case "2":
+                }
+                case "2": {
                     int idToDel = readInt("Enter Client ID to delete: ");
                     manager.deleteClient(idToDel);
                     break;
-                case "3":
+                }
+                case "3": {
                     int idToEdit = readInt("Enter Client ID to edit: ");
                     Client c = manager.findClient(idToEdit);
                     if (c != null) {
@@ -105,11 +157,63 @@ public class Menu {
                         System.out.println("Error: Client not found.");
                     }
                     break;
-                case "4":
+                }
+                case "4": {
                     System.out.println("\n--- Registered Clients ---");
                     manager.printClients();
                     break;
+                }
                 case "5":
+                {
+                    int id = readInt("Enter Client ID: ");
+
+                    Client client = manager.findClient(id);
+
+                    if(client != null)
+                    {
+                        if(client.getOrdersQueue().isEmpty())
+                        {
+                            System.out.println(
+                                    "This client has no orders.");
+                        }
+                        else
+                        {
+                            System.out.println(
+                                    "\n=== Orders of "
+                                            + client.getName()
+                                            + " ===");
+
+                            QueueAsList temp =
+                                    new QueueAsList();
+
+                            while(!client.getOrdersQueue().isEmpty())
+                            {
+                                Order order =
+                                        (Order) client.getOrdersQueue().pull();
+
+                                order.printOrderDetails();
+
+                                System.out.println("--------------------------------");
+
+                                temp.offer(order);
+                            }
+
+                            while(!temp.isEmpty())
+                            {
+                                client.getOrdersQueue().offer(
+                                        temp.pull());
+                            }
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("Client not found.");
+                    }
+
+                    break;
+                }
+
+                case "6":
                     back = true;
                     break;
                 default:
@@ -132,61 +236,10 @@ public class Menu {
 
             String choice = readString("Select an option: ");
 
-            switch (choice) {
-//                case "1":
-//                    int clientId = readInt("Enter Client ID for this order: ");
-//                    Client client = manager.findClient(clientId);
-//
-//                    if (client != null) {
-//                        int orderId = manager.getNextOrderID();
-//                        Order newOrder = new Order(client, LocalDateTime.now(), orderId);
-//                        int productsAdded = 0; // Counter to track if order is empty
-//
-//                        boolean addingProducts = true;
-//                        System.out.println("--- Adding Products to Order #" + orderId + " ---");
-//
-//                        while (addingProducts)
-//                        {
-//                            String pName = readString("Enter product name to add (or type 'done' to finish): ");
-//
-//                            if (pName.equalsIgnoreCase("done")) {
-//                                addingProducts = false;
-//                                continue;
-//                            }
-//
-//                            Product p = searchProductByName(pName);
-//                            if (p != null) {
-//                                int qty = readInt("Enter quantity for " + pName + ": ");
-//
-//                                if (manager.sellProduct(p, qty)) {
-//                                    for (int i = 0; i < qty; i++) {
-//                                        newOrder.addProduct(p , qty);
-//                                    }
-//                                    productsAdded += qty;
-//                                    System.out.println(qty + " units of '" + pName + "' added to the order.");
-//                                } else {
-//                                    System.out.println("Error: Not enough stock in Batches. Available: " + manager.getProductTotalStock(p));
-//                                }
-//                            } else {
-//                                System.out.println("Error: Product '" + pName + "' not found in inventory.");
-//                            }
-//                        }
-//
-//                        // Validation: Check if order is empty
-//                        if (productsAdded > 0) {
-//                            manager.addOrder(newOrder);
-//                            client.addOrder(newOrder);
-//                            System.out.println("Order #" + orderId + " finalized successfully for " + client.getName() + ".");
-//                        } else {
-//                            System.out.println("Order creation cancelled: No products were added. The empty order has been deleted.");
-//                        }
-//
-//                    } else {
-//                        System.out.println("Error: Client not found. Cannot create order.");
-//                    }
-//                    break;
+            switch (choice)
+            {
                 case "1":
-
+                {
                     int clientId = readInt("Enter Client ID for this order: ");
 
                     Client client = manager.findClient(clientId);
@@ -201,13 +254,9 @@ public class Menu {
 
                         boolean addingProducts = true;
 
-                        System.out.println(
-                                "\n--- Adding Products to Order #"
-                                        + orderId
-                                        + " ---");
+                        System.out.println("\n--- Adding Products to Order #" + orderId + " ---");
 
-                        while (addingProducts)
-                        {
+                        while (addingProducts) {
                             String pName = readString("Enter product name to add (or type 'done' to finish): ");
 
                             if (pName.equals("Done"))
@@ -218,12 +267,8 @@ public class Menu {
 
                             Product p = searchProductByName(pName);
 
-                            if (p != null)
-                            {
-                                int qty = readInt(
-                                                "Enter quantity for "
-                                                        + pName
-                                                        + ": ");
+                            if (p != null) {
+                                int qty = readInt("Enter quantity for " + pName + ": ");
 
                                 if (qty > 0)
                                 {
@@ -231,72 +276,54 @@ public class Menu {
 
                                     productsAdded++;
 
-                                    System.out.println(qty
-                                                    + " units of '"
-                                                    + pName
-                                                    + "' added to the order.");
-                                }
-                                else
-                                {
+                                    System.out.println(qty + " units of '" + pName + "' added to the order.");
+                                } else {
                                     System.out.println(
                                             "Quantity must be greater than zero.");
                                 }
-                            }
-                            else
-                            {
-                                System.out.println(
-                                        "Error: Product '"
-                                                + pName
-                                                + "' not found in inventory.");
+                            } else {
+                                System.out.println("Error: Product '" + pName + "' not found in inventory.");
                             }
                         }
 
-                        if (productsAdded > 0)
-                        {
+                        if (productsAdded > 0) {
                             manager.addOrder(newOrder);
                             client.addOrder(newOrder);
 
                             System.out.println(
-                                    "\nOrder #"
-                                            + orderId
-                                            + " created successfully for "
-                                            + client.getName()
-                                            + ".");
-                        }
-                        else
+                                    "\nOrder #" + orderId + " created successfully for " + client.getName() + ".");
+                        } else
                         {
-                            System.out.println(
-                                    "\nOrder creation cancelled: No products were added.");
+                            System.out.println("\nOrder creation cancelled: No products were added.");
                         }
-                    }
-                    else
-                    {
-                        System.out.println(
-                                "Error: Client not found.");
-                    }
-
-                    break;
-
-                case "2":
-                    Order processed = manager.processNextOrder();
-                    if (processed != null) {
-                        System.out.println("Processed Order: " + processed.toString());
                     } else {
-                        System.out.println("The factory order queue is currently empty.");
+                        System.out.println("Error: Client not found.");
                     }
+
                     break;
+                }
+                case "2":
+                {
+                    Order processed = manager.processNextOrder();
+                    if (processed != null)
+                        processed.generateInvoice();
+                    break;
+                }
                 case "3":
+                {
                     Order peeked = manager.peekNextOrder();
                     if (peeked != null) {
                         System.out.println("Next pending order: " + peeked.toString());
-                    } else
-                    {
+                    } else {
                         System.out.println("No pending orders.");
                     }
                     break;
+                }
                 case "4":
+                {
                     back = true;
                     break;
+                }
                 default:
                     System.out.println("Invalid option.");
             }
@@ -312,56 +339,64 @@ public class Menu {
         while (!back) {
             System.out.println("\n--- Inventory & Batches Management ---");
             System.out.println("1. Add New Product Line (Requires Raw Materials)");
-            System.out.println("2. Delete Product Line"); // הוספנו אפשרות מחיקה
+            System.out.println("2. Delete Product Line");
             System.out.println("3. Add Batch to Existing Product");
-            System.out.println("4. View All Batches & Total Stock for Product");
-            System.out.println("5. Check Total Products Types");
-            System.out.println("6. Back to Main Menu");
+            System.out.println("4. View Total Stock Of Product");
+            System.out.println("5. Back to Main Menu");
 
             String choice = readString("Select an option: ");
 
-            switch (choice) {
+            switch (choice)
+            {
                 case "1":
-                    int sNum = readInt("Enter Serial Number: "); // קליטת המק"ט
-                    String pName = readString("Enter product name: ");
-                    double cost = readDouble("Enter production cost: ");
-                    double weight = readDouble("Enter product weight: ");
-
-                    Product p = new Product(pName, cost, weight);
-                    p.setSerialNumber(sNum); // עדכון המק"ט במוצר
-
-                    System.out.println("--- Assigning Raw Materials to " + pName + " ---");
-                    boolean addingMaterials = true;
-                    int rawMaterialsCount = 0; // מונה לבדיקה האם הוכנסו חומרי גלם
-
-                    while (addingMaterials)
+                    int sNum = readInt("Enter Serial Number: ");
+                    if (manager.isProductInCatalog(sNum))
                     {
-                        String rawName = readString("Enter raw material name (or 'done' to finish): ");
-                        if (rawName.equals("Done"))
-                        {
-                            addingMaterials = false;
-                            continue;
-                        }
-
-                        RawMaterial rm = searchRawMaterialByName(rawName);
-                        if (rm != null)
-                        {
-                            p.addRawMaterial(rm);
-                            rawMaterialsCount++; // מעדכנים שהוכנס חומר גלם
-                            System.out.println("Added '" + rm.getName() + "' to the product's formulation.");
-                        } else
-                        {
-                            System.out.println("Error: Raw Material '" + rawName + "' not found.");
-                        }
+                        System.out.println("Error: Product with Serial Number " + sNum + " already exists!");
                     }
-
-                    // ensure there is atleast 1 raw material
-                    if (rawMaterialsCount > 0)
+                    else
                     {
-                        manager.addProduct(p);
-                        System.out.println("Product line '" + pName + "' created and added to inventory.");
-                    } else {
-                        System.out.println("Error: Product creation cancelled. A product must contain at least one raw material.");
+                        String pName = readString("Enter product name: ");
+                        double cost = readDouble("Enter production cost: ");
+                        double weight = readDouble("Enter product weight: ");
+                        Product p = new Product(pName, cost, weight);
+                        p.setSerialNumber(sNum);
+
+                        System.out.println("--- Assigning Raw Materials to " + pName + " ---");
+                        boolean addingMaterials = true;
+                        int rawMaterialsCount = 0;
+
+                        while (addingMaterials)
+                        {
+                            String rawName = readString("Enter raw material name (or 'done' to finish): ");
+                            if (rawName.equals("Done"))
+                            {
+                                addingMaterials = false;
+                                continue;
+                            }
+
+                            RawMaterial rm = searchRawMaterialByName(rawName);
+                            if (rm != null)
+                            {
+                                p.addRawMaterial(rm);
+                                rawMaterialsCount++; // מעדכנים שהוכנס חומר גלם
+                                System.out.println("Added '" + rm.getName() + "' to the product's formulation.");
+                            } else
+                            {
+                                System.out.println("Error: Raw Material '" + rawName + "' not found.");
+                            }
+                        }
+
+                        // ensure there is atleast 1 raw material
+                        if (rawMaterialsCount > 0)
+                        {
+                            manager.addProduct(p);
+                            System.out.println("Product line '" + pName + "' created and added to the catalog.");
+                        }
+                        else
+                        {
+                            System.out.println("Error: Product creation cancelled. A product must contain at least one raw material.");
+                        }
                     }
                     break;
 
@@ -377,16 +412,18 @@ public class Menu {
 
                 case "3":
                     Product toAddBatch = searchProductByName(readString("Enter product name to add a batch: "));
-                    if (toAddBatch != null) {
+                    if (toAddBatch != null)
+                    {
                         int batchQty = readInt("Enter batch quantity: ");
                         int daysToExpire = readInt("Enter days until expiration: ");
-
                         Batch newBatch = new Batch(batchQty, LocalDateTime.now().plusDays(daysToExpire));
-                        toAddBatch.addBatch(newBatch);
-
-                        System.out.println("Batch added successfully to " + toAddBatch.getName() + ".");
-                        System.out.println("Updated Total Stock: " + manager.getProductTotalStock(toAddBatch));
-                    } else
+                        if(toAddBatch.addBatch(newBatch))
+                        {
+                            System.out.println("Batch added successfully to " + toAddBatch.getName() + ".");
+                            System.out.println("Updated Total Stock: " + manager.getProductTotalStock(toAddBatch));
+                        }
+                    }
+                    else
                     {
                         System.out.println("Product not found.");
                     }
@@ -402,11 +439,6 @@ public class Menu {
                     break;
 
                 case "5":
-                    int count = manager.getProductsInventory() != null ? manager.getProductsInventory().size() : 0;
-                    System.out.println("Total product types in inventory: " + count);
-                    break;
-
-                case "6":
                     back = true;
                     break;
 
@@ -479,7 +511,7 @@ public class Menu {
                     String license = readString("Enter License Number: ");
                     double price = readDouble("Enter Distribution Price: ");
 
-                    Distributor dist = new Distributor(dId, dName, Distributor.Region.CENTER, license, price);
+                    Distributor dist = new Distributor(dId, dName, license, price);
                     manager.addClient(dist);
                     System.out.println("Distributor added successfully to the clients tree.");
                     break;
@@ -509,7 +541,7 @@ public class Menu {
     // ==========================
 
     private Product searchProductByName(String name) {
-        LinkedList inventory = manager.getProductsInventory();
+        LinkedList inventory = manager.getproductsCatalog();
         if (inventory == null || inventory.isEmpty()) return null;
 
         LinkedNode current = inventory.getFirst();
