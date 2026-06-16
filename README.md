@@ -54,12 +54,12 @@ The project demonstrates core Object-Oriented Programming principles and data st
 
 - 📦 Inventory Management
 - 🥫 Raw Material Tracking
-- 🛒 Customer main.baseClasses.Order Processing
-- 🚚 main.baseClasses.Distributor Management
+- 🛒 Customer Order Processing
+- 🚚 Distributor Management
 - 📅 Expiration Date Monitoring
 - 💰 Profit & Value Calculations
 - 🌳 Binary Search Tree Inventory Storage
-- 🔄 Queue-Based main.baseClasses.Order Management
+- 🔄 Queue-Based Order Management
 
 ## 📊 UML Diagram
 
@@ -120,22 +120,15 @@ Product --> StackAsList : batches
 
 ---
 
-## 🏗️ Architecture
+## 🎯 OOP Concepts Demonstrated
 
-```text 
-main.baseClasses.Client
- ├── main.baseClasses.Distributor
-
-main.baseClasses.RawMaterial (Abstract)
- ├── main.baseClasses.LiquidRawMaterial
- └── main.baseClasses.SolidRawMaterial
-
-main.baseClasses.Product
- └── main.baseClasses.RawMaterial List
-
-main.baseClasses.Order
- └── main.baseClasses.Product List
-```
+- Encapsulation
+- Inheritance
+- Polymorphism
+- Abstraction
+- Interfaces
+- Custom Data Structures
+- Exception Handling
 
 ---
 
@@ -152,7 +145,6 @@ main.baseClasses.Order
 
 ## 📂 Project Structure
 
-```text
 ```text
 src/
 ├── main/
@@ -179,8 +171,6 @@ src/
 │
 └── managers/
     └── FactoryManager.java
-```
-
 ```
 
 ---
