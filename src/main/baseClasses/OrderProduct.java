@@ -4,7 +4,9 @@ public class OrderProduct
 {
     private Product product;
     private int quantity;
-
+    /**
+     * Constructs an OrderProduct with a specific product and quantity.
+     */
     public OrderProduct(Product product, int quantity)
     {
         this.product = product;
@@ -30,7 +32,7 @@ public class OrderProduct
     {
         this.quantity = quantity;
     }
-
+    /** Returns a string summary of the product name and quantity. */
     public String toString()
     {
         return product.getName()

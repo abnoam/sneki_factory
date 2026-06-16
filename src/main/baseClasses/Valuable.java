@@ -9,7 +9,6 @@ public interface Valuable
 
     double calcFinalValue();
     double getBasePrice();
-    double calcProfit(double targetProfitPercentage);
 }
 
 

@@ -62,7 +62,7 @@ public class FactoryManager
         {
             System.out.println("Client with ID " + clientID + " not found.");
             return;
-        }  //67
+        }
         
         if (!client.getOrdersQueue().isEmpty())
         {
@@ -172,10 +172,12 @@ public class FactoryManager
         LinkedList newInventory = new LinkedList();
         main.dataStructures.LinkedNode current = productsCatalog.getFirst();
 
-        while (current != null) {
+        while (current != null)
+        {
             Product p = (Product) current.getData();
-            // אם זה לא המוצר שאנחנו רוצים למחוק, נוסיף אותו לרשימה החדשה
-            if (!p.getName().equalsIgnoreCase(name)) {
+            //
+            if (!p.getName().equals(name))
+            {
                 newInventory.addLast(p);
             } else {
                 found = true; // מצאנו ודילגנו עליו (נמחק)
@@ -227,15 +229,34 @@ public class FactoryManager
         }
     }
 
-    public RawMaterial removeFirstMaterial()
+    public void printRawMaterial()
     {
-        if (rawMaterialsInventory.isEmpty())
+        if (rawMaterialsInventory == null || rawMaterialsInventory.isEmpty())
         {
-            return null;
+            System.out.println("Raw materials inventory is currently empty.");
+            return;
         }
 
-        return (RawMaterial) rawMaterialsInventory.removeFirst();
+        System.out.println("\n=== RAW MATERIALS INVENTORY ===");
+
+        // מתחילים מהאיבר הראשון ברשימה
+       LinkedNode current = rawMaterialsInventory.getFirst();
+        int counter = 1;
+
+        // עוברים על הרשימה כל עוד לא הגענו לסופה
+        while (current != null)
+        {
+            RawMaterial rm = (RawMaterial) current.getData();
+            System.out.println("#" + counter + ". " + rm.toString());
+
+            // מתקדמים לאיבר הבא
+            current = current.getNext();
+            counter++;
+        }
+        System.out.print("\n");
+        System.out.println("===============================\n");
     }
+
 
     public LinkedList getRawMaterialsInventory()
     {

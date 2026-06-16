@@ -19,6 +19,7 @@ public class SolidRawMaterial extends RawMaterial
     public double calcWastageFactor(){
         return weightInKg * 0.95; //5% Wastage.
     }
+
     public double getWeightInKg(){
         return weightInKg;
     }

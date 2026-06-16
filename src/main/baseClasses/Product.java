@@ -189,20 +189,12 @@ public class Product implements Valuable
         return true;
     }
 
-    public Batch getClosestBatch()
-    {
-        if(batches.isEmpty())
-        {
-            return null;
-        }
 
-        return (Batch)batches.peek();
-    }
     public boolean isEnoughInStock(int amount)
     {
         return getTotalStock() >= amount;
     }
-
+    // Removes the requested quantity from inventory, starting from the oldest batch.
     public void sellFromStock(int amount)
     {
         if(amount <= 0)
@@ -283,6 +275,7 @@ public class Product implements Valuable
     }
 
     // interface methods:
+    // Calculates the final value including tax.
     public double calcFinalValue()
     {
         return this.productionCost * (1 + Valuable.TAX_PERCENT);
@@ -294,19 +287,6 @@ public class Product implements Valuable
     }
 
 
-    public double calcProfit(double targetProfitPercentage)
-    {
-        if (targetProfitPercentage >= 100.0 || targetProfitPercentage < 0)
-        {
-            System.out.println("Error: Invalid profit percentage.");
-            return this.calcFinalValue();
-        }
-
-        double costWithTax = this.calcFinalValue(); // get total production cost
-        double marginFactor = targetProfitPercentage / 100.0; // calc requested profit percentage in dicimal factor
-        return costWithTax / (1.0 - marginFactor); // calc the target price using: TotalCost/(1 - Margin Factor)
-    }
-
     public int getSerialNumber()
     {
         return this.serialNumber;
@@ -316,40 +296,6 @@ public class Product implements Valuable
     {
         this.serialNumber = serialNumber;
     }
-
-//    public boolean produceNewBatch(int batchQty, LocalDateTime expiryDate)
-//    {
-//        // 1. קודם בודקים אם יש מספיק מלאי מכל חומרי הגלם (לפי יחס 1:1)
-//        LinkedNode current = this.rawMaterials.getFirst();
-//        while (current != null)
-//        {
-//            RawMaterial rm = (RawMaterial) current.getData();
-//
-//            if (rm.getQuantity() < batchQty)
-//            {
-//                System.out.println("Error: Not enough " + rm.getName() + " in stock. Required: " + batchQty + ", Available: " + rm.getQuantity());
-//                return false; // עוצרים את הייצור - אין מספיק חומר גלם
-//            }
-//            current = current.getNext();
-//        }
-//
-//        // 2. אם הגענו לכאן, סימן שיש מספיק מהכל. עכשיו מורידים את הכמויות
-//        current = this.rawMaterials.getFirst();
-//        while (current != null)
-//        {
-//            RawMaterial rm = (RawMaterial) current.getData();
-//
-//            rm.setQuantity(rm.getQuantity() - batchQty); // הורדה של 1:1
-//
-//            current = current.getNext();
-//        }
-//
-//        // 3. יוצרים את האצווה החדשה ומכניסים למחסנית הממוינת שלך
-//        Batch newBatch = new Batch(batchQty, expiryDate);
-//        this.addBatch(newBatch);
-//
-//        return true; // הייצור הצליח
-//    }
 
 }
 

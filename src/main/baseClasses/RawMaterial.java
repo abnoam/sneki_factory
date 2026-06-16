@@ -62,11 +62,6 @@ public abstract class RawMaterial implements Valuable
         return purchasePrice;
     }
 
-    public double calcProfit(double targetProfitPercentage) //calculates the desirable profit
-    {
-        return calcFinalValue() * (targetProfitPercentage / 100.0);
-    }
-
     // Getters & Setters
     public String getName(){
         return name;
@@ -129,15 +124,15 @@ public abstract class RawMaterial implements Valuable
         String hourStr = (date.getHour() < 10 ? "0" : "") + date.getHour();
 
         return
-                "name: " + name +
-                " | serialNumber: " + serialNumber +
-                " | quantityInStock: " + quantityInStock +
-                " | expirationDate: " + date.getDayOfMonth() + "/"
+                "Name: " + name +
+                " | Serial Number: " + serialNumber +
+                " | Quantity In Stock: " + quantityInStock +
+                " | Expiration Date: " + date.getDayOfMonth() + "/"
                                     + date.getMonthValue() + "/"
                                     + date.getYear() + " "
                                     + hourStr + ":"
                                     + minuteStr +
-                " | purchasePrice: " + purchasePrice +
-                " | expired: " + isExpired();
+                " | Purchase Price: " + purchasePrice + " " + Valuable.CURRENCY +
+                " | Expired: " + isExpired();
     }
 }

@@ -8,17 +8,20 @@ import main.dataStructures.QueueAsList;
 import java.util.Scanner;
 import java.time.LocalDateTime;
 
-public class Menu {
+public class Menu
+{
     private final FactoryManager manager;
     private final Scanner scanner;
-
+    // Initializes the menu with a specific manager instance.
     public Menu(FactoryManager manager) {
         this.manager = manager;
         this.scanner = new Scanner(System.in);
     }
 
-    public void run() {
+    public void run()
+    {
         boolean running = true;
+        // This loop keeps the program alive until the user decides to quit
         while (running)
         {
             clearScreen();
@@ -97,6 +100,7 @@ public class Menu {
                 case "0":
                     clearScreen();
                     System.out.println("Shutting down the system. Goodbye!");
+                    // Closes the program
                     running = false;
                     break;
                 default:
@@ -457,7 +461,8 @@ public class Menu {
             System.out.println("\n--- Raw Materials Management ---");
             System.out.println("1. Add Liquid Material");
             System.out.println("2. Add Solid Material");
-            System.out.println("3. Back to Main Menu");
+            System.out.println("3. Print All Raw Materials");
+            System.out.println("4. Back to Main Menu");
 
             String choice = readString("Select an option: ");
 
@@ -483,6 +488,9 @@ public class Menu {
                     System.out.println("Solid material '" + sName + "' added.");
                     break;
                 case "3":
+                    manager.printRawMaterial();
+                    break;
+                case "4":
                     back = true;
                     break;
                 default:
@@ -540,14 +548,17 @@ public class Menu {
     // UTILITY METHODS
     // ==========================
 
-    private Product searchProductByName(String name) {
+    private Product searchProductByName(String name)
+    {
         LinkedList inventory = manager.getproductsCatalog();
         if (inventory == null || inventory.isEmpty()) return null;
 
         LinkedNode current = inventory.getFirst();
-        while (current != null) {
+        while (current != null)
+        {
             Product p = (Product) current.getData();
-            if (p.getName().equalsIgnoreCase(name)) {
+            if (p.getName().equalsIgnoreCase(name))
+            {
                 return p;
             }
             current = current.getNext();
@@ -561,9 +572,11 @@ public class Menu {
         if (inventory == null || inventory.isEmpty()) return null;
 
         LinkedNode current = inventory.getFirst();
-        while (current != null) {
+        while (current != null)
+        {
             RawMaterial rm = (RawMaterial) current.getData();
-            if (rm.getName() != null && rm.getName().equalsIgnoreCase(name)) {
+            if (rm.getName() != null && rm.getName().equalsIgnoreCase(name))
+            {
                 return rm;
             }
             current = current.getNext();
@@ -606,8 +619,9 @@ public class Menu {
         while (true)
         {
             System.out.print(s);
-            try {
-                return Integer.parseInt(scanner.nextLine().trim());
+            try
+            {
+                return Integer.parseInt(scanner.nextLine().trim()); // converts
             } catch (NumberFormatException e) {
                 System.out.println("Error: Please enter a valid integer number.");
             }

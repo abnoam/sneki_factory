@@ -112,6 +112,10 @@ public class Order {
         this.orderDate = orderDate;
     }
 
+    /**
+     * Prints order summary (ID, client, item count, date)
+     * and lists all products in the order.
+     */
     public void printOrderDetails()
     {
         LocalDateTime date = this.getOrderDate();
@@ -134,7 +138,10 @@ public class Order {
         }
     }
 
-
+    /**
+     * Returns a string representation of the order,
+     * including ID, customer name, item count, and date.
+     */
     public String toString()
     {
         LocalDateTime date = this.getOrderDate();

@@ -19,31 +19,38 @@ public class Main
         // ==========================================
 
         RawMaterial corn = new SolidRawMaterial("Corn", 1001, 500, LocalDateTime.now().plusMonths(12),
-                                                15, 250);
+                                                15, 30);
 
-        RawMaterial oil = new LiquidRawMaterial("Vegetable Oil", 1002, 800, LocalDateTime.now().plusMonths(6),
-                                                10, 500);
+        RawMaterial oil = new LiquidRawMaterial("Vegetable Oil", 1002, 300, LocalDateTime.now().plusMonths(6),
+                                                10, 35);
 
+        RawMaterial peanuts = new SolidRawMaterial("Peanuts", 1003, 67, LocalDateTime.now().plusMonths(7),
+                                                10.67, 25);
 
+        RawMaterial honey = new LiquidRawMaterial("Honey", 1004, 5, LocalDateTime.now().plusYears(10),
+                                                  15, 30);
 
-        RawMaterial nuts = new SolidRawMaterial("nuts", 1003,
-                                                67, LocalDateTime.now().plusMonths(7),
-                                                10.67, 500);
+        RawMaterial cocoa = new SolidRawMaterial("Cocoa", 1005, 120, LocalDateTime.now().plusMonths(8),
+                                                10.67, 25);
+
+        RawMaterial amba = new LiquidRawMaterial("amba", 1006, 5, LocalDateTime.now().plusYears(10),
+                15, 1000);
+
 
         manager.addRawMaterial(corn);
         manager.addRawMaterial(oil);
+        manager.addRawMaterial(peanuts);
+        manager.addRawMaterial(honey);
+        manager.addRawMaterial(cocoa);
+        manager.addRawMaterial(amba);
 
-        System.out.println("=== RAW MATERIALS ===");
-        System.out.println(corn);
-        System.out.println(oil);
+        manager.printRawMaterial();
 
-        // ==========================================
-        // 1D ARRAY DEMO
-        // ==========================================
 
         RawMaterial[] materials_for_bamba = {corn, oil};
-        RawMaterial[] materials_for_peanut_butter = {oil, nuts};
-        RawMaterial[] Corn = {corn};
+        RawMaterial[] materials_for_corn = {corn};
+        RawMaterial[] materials_for_veg_oil = {oil};
+        RawMaterial[] materials_for_amba_filled_bamba = {corn, oil, amba, peanuts};
 
         Product bamba = new Product(
                 "Bamba",
@@ -57,16 +64,24 @@ public class Main
                 10,
                 LocalDateTime.now().plusYears(3),
                 1,
-                materials_for_peanut_butter, 1002);
+                materials_for_veg_oil, 1002);
+
         Product packed_corn = new Product(
-                "Packed Corn",
+                "Packed corn",
                 10,
                 LocalDateTime.now().plusYears(3),
                 1,
-                Corn, 1003);
+                materials_for_corn, 1003);
+
+        Product amba_filled_bamba = new Product(
+                "Amba filled bamba",
+                3.5,
+                LocalDateTime.now().plusYears(2),
+                30,
+                materials_for_amba_filled_bamba , 1067);
 
         // ==========================================
-        // STACK DEMO (BATCHES)
+        // STACK DEMO
         // ==========================================
 
         bamba.addBatch(new Batch(50, LocalDateTime.now().plusMonths(1)));
@@ -75,12 +90,16 @@ public class Main
 
         bamba.addBatch(new Batch(30, LocalDateTime.now().plusDays(10)));
 
+        veg_oil.addBatch(new Batch(50, LocalDateTime.now().plusDays(10)));
+
         manager.addProduct(bamba);
         manager.addProduct(veg_oil);
         manager.addProduct(packed_corn);
+        manager.addProduct(amba_filled_bamba);
 
-        System.out.println("\n=== PRODUCT STOCK (STACK) ===");
+        System.out.println("\n=== PRODUCT STOCK ===");
         manager.printProductStock(bamba);
+        System.out.println("Checking if the bamba is expired: " + bamba.isExpired());
 
         // ==========================================
         // INTERFACE DEMO
@@ -97,13 +116,13 @@ public class Main
 
         Client client1 = new Client(676767, "Noam");
         Client tempClient = new Client(123456, "nahum nehemya robert chikel");
-        Distributor distributor = new Distributor(770154, "Rafi Levi Distributor", "2025", 1500);
+        Distributor distributor1 = new Distributor(770154, "Pitzotzya't Voloch", "2025", 1500);
 
         manager.addClient(client1);
         manager.addClient(tempClient);
-        manager.addClient(distributor);
+        manager.addClient(distributor1);
 
-        System.out.println("\n=== CLIENT TREE (BST) ===");
+        System.out.println("\n=== CLIENT TREE ===");
         manager.printClients();
 
         System.out.println("\nDeleting client ID: " + tempClient.getClientID());
@@ -117,19 +136,25 @@ public class Main
         // ==========================================
 
         Order order1 = new Order(client1, LocalDateTime.now(), manager.getNextOrderID());
+        Order specialOrder = new Order(distributor1, LocalDateTime.now(), manager.getNextOrderID());
 
         order1.addProduct(bamba, 100);
         order1.addProduct(veg_oil, 50);
+        specialOrder.addProduct(amba_filled_bamba, 10000);
 
         System.out.println("\nCreating an order for: " + client1.getName());
         manager.addOrder(order1); // adds order to factory order queue
         client1.addOrder(order1); // adds order to the client queue
         System.out.println(client1);
 
+        System.out.println("\nCreating an order for: " + distributor1.getName());
+        manager.addOrder(specialOrder);
+        distributor1.addOrder(specialOrder);
+        System.out.println(distributor1);
+
 
         System.out.println("\n=== ORDER INFO ===");
         order1.generateInvoice();
-        order1.printOrderDetails();
 
 
         System.out.println("\nAttempting to delete client with orders: ");
@@ -139,11 +164,8 @@ public class Main
         System.out.println("Next Order:");
         System.out.println(manager.peekNextOrder());
 
-        //System.out.println("\nProcessing Order...");
-        //System.out.println(manager.processNextOrder());
-
         // ==========================================
-        // 2D ARRAY & LINKED LIST
+        // 2D ARRAY DEMO
         // ==========================================
 
         manager.printProductCatalogMatrix();
@@ -176,6 +198,7 @@ public class Main
         System.out.println("\n❖================▽▼▽================❖");
         System.out.println("       DEMO COMPLETED");
         System.out.println("❖================▽▼▽================❖\n");
+
         Menu menu = new Menu(manager);
         menu.run();
     }
