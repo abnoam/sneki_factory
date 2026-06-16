@@ -10,14 +10,6 @@ public class SolidRawMaterial extends RawMaterial
     {
         super(name, serialNumber,quantityInStock,expirationDate,purchasePrice);
         this.weightInKg = weightInKg;
-
-    }
-    public int calcPackages()
-    {
-        return (int)(weightInKg / 0.5); // a package weight is 0.5 kg.
-    }
-    public double calcWastageFactor(){
-        return weightInKg * 0.95; //5% Wastage.
     }
 
     public double getWeightInKg(){

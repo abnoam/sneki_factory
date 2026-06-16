@@ -108,7 +108,8 @@ public class FactoryManager
         Order processed = (Order) ordersQueue.peek();
         Client client = processed.getClient();
         LinkedNode currentProductNode = processed.getProductsList().getFirst();
-        while (currentProductNode != null) {
+        while (currentProductNode != null)
+        {
             OrderProduct op = (OrderProduct) currentProductNode.getData();
             if (!op.getProduct().isEnoughInStock(op.getQuantity())){
                 System.out.println("\nNot enough " + op.getProduct().getName() + " in stock");
