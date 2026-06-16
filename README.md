@@ -2,7 +2,7 @@
 
 # 🏭 Sneki
 
-### Food Factory Inventory & main.baseClasses.Order Management System
+### Food Factory Inventory & Order Management System
 
 </div>
 
@@ -31,10 +31,11 @@ The project demonstrates core Object-Oriented Programming principles and data st
 
 ### 📚 Data Structures
 
-- Queue
-- Linked List
-- Binary Search Tree (BST)
-- ArrayList
+- Binary Search Tree (BST) – Client Management
+- Queue – Order Processing
+- Stack – Batch Inventory Management
+- Linked List – Product & Material Storage
+- Arrays – Catalog & Raw Material Storage
 
 </td>
 
@@ -59,6 +60,63 @@ The project demonstrates core Object-Oriented Programming principles and data st
 - 💰 Profit & Value Calculations
 - 🌳 Binary Search Tree Inventory Storage
 - 🔄 Queue-Based main.baseClasses.Order Management
+
+## 📊 UML Diagram
+
+```mermaid
+classDiagram
+
+class Valuable
+
+class RawMaterial
+class SolidRawMaterial
+class LiquidRawMaterial
+
+class Product
+class Batch
+
+class Client
+class Distributor
+
+class Order
+
+class FactoryManager
+
+class MyBST
+class TreeNode
+
+class LinkedList
+class LinkedNode
+
+class QueueAsList
+class StackAsList
+
+RawMaterial <|-- SolidRawMaterial
+RawMaterial <|-- LiquidRawMaterial
+
+Client <|-- Distributor
+
+Product ..|> Valuable
+RawMaterial ..|> Valuable
+
+Product *-- Batch
+Product --> RawMaterial
+
+Order --> Client
+Order --> Product
+
+FactoryManager --> MyBST
+FactoryManager --> LinkedList
+FactoryManager --> QueueAsList
+
+LinkedList *-- LinkedNode
+QueueAsList *-- LinkedList
+StackAsList *-- LinkedList
+MyBST *-- TreeNode
+
+Client --> QueueAsList : orders
+Product --> StackAsList : batches
+```
 
 ---
 
@@ -95,16 +153,34 @@ main.baseClasses.Order
 ## 📂 Project Structure
 
 ```text
+```text
 src/
-├── main.Main.java
-├── main.baseClasses.Product.java
-├── main.baseClasses.Order.java
-├── main.baseClasses.Client.java
-├── main.baseClasses.Distributor.java
-├── main.baseClasses.RawMaterial.java
-├── main.baseClasses.LiquidRawMaterial.java
-├── main.baseClasses.SolidRawMaterial.java
-└── main.baseClasses.Valuable.java
+├── main/
+│   └── Main.java
+│
+├── main/baseClasses/
+│   ├── Product.java
+│   ├── Batch.java
+│   ├── Order.java
+│   ├── Client.java
+│   ├── Distributor.java
+│   ├── RawMaterial.java
+│   ├── SolidRawMaterial.java
+│   ├── LiquidRawMaterial.java
+│   └── Valuable.java
+│
+├── dataStructures/
+│   ├── LinkedList.java
+│   ├── LinkedNode.java
+│   ├── QueueAsList.java
+│   ├── StackAsList.java
+│   ├── MyBST.java
+│   └── TreeNode.java
+│
+└── managers/
+    └── FactoryManager.java
+```
+
 ```
 
 ---
