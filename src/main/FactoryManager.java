@@ -335,7 +335,7 @@ public class FactoryManager
         }
 
         // הדפסה טבלאית ומעוצבת של המערך הדו-מימדי
-        System.out.println("\n=== PRODUCT CATALOG (2D ARRAY) ===");
+        System.out.println("\n=== PRODUCT CATALOG ===");
         for (int i = 0; i < catalogTable.length; i++) {
             // עיצוב עמודות קבוע כדי שייראה כמו טבלה
                 System.out.printf("%-20s | %-10s | %-10s | %-10s\n",
