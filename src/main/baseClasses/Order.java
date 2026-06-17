@@ -35,6 +35,10 @@ public class Order {
         {
             productsList.addLast(new OrderProduct(product, quantity));
         }
+        else
+        {
+            throw new NullPointerException("Invalid product or quantity provided.");
+        }
     }
 
     /**
