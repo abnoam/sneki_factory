@@ -33,7 +33,7 @@ public class Main
         RawMaterial cocoa = new SolidRawMaterial("Cocoa", 1005, 120,
                                                 10.67, 25);
 
-        RawMaterial amba = new LiquidRawMaterial("amba", 1006, 5,
+        RawMaterial amba = new LiquidRawMaterial("Amba", 1006, 5,
                 15, 1000);
 
 

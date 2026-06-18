@@ -420,10 +420,6 @@ public class Menu
                     {
                         System.out.println("Product '" + delName + "' was successfully deleted from inventory.");
                     }
-//                    else
-//                    {
-//                        System.out.println("Error: Product '" + delName + "' not found in inventory. TEST TEST TEST");
-//                    }
                     break;
 
                 case "3": //add batch to existing product
