@@ -9,7 +9,7 @@ public class Distributor extends Client
     private LocalDateTime lastShipmentDate;
     private String licenseNumber;
 
-    public Distributor(int clientID, String name, String licenseNumber, double distributionPrice )
+    public Distributor(int clientID, String name, String licenseNumber, double distributionPrice )  //constructor
     {
         super(clientID, name);
         this.licenseNumber =licenseNumber;
@@ -17,10 +17,12 @@ public class Distributor extends Client
         this.lastShipmentDate = null;
     }
 
-    public void recordNewShipment()
+    public void recordNewShipment()     //sets present date as last shipment date
     {
         this.lastShipmentDate = LocalDateTime.now();
     }
+
+    // Getters & Setters
 
     public String getLicenseNumber()
     {

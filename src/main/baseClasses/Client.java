@@ -8,14 +8,14 @@ public class Client
     private String name;
     private QueueAsList ordersQueue;
 
-    public Client(int clientID, String name)
+    public Client(int clientID, String name)    //constructor
     {
         this.clientID = clientID;
         this.name = name;
         this.ordersQueue = new QueueAsList();
     }
 
-    public void addOrder(Order newOrder)        //adds order to the queue
+    public void addOrder(Order newOrder)    //adds order to the queue
     {
         if(newOrder == null)
         {
@@ -34,6 +34,8 @@ public class Client
     {
         return (Order) this.ordersQueue.peek(); // returns the order from the queue without removing it
     }
+
+    // Getters & Setters
 
     public int getClientID()
     {

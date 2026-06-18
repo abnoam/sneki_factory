@@ -18,22 +18,22 @@ public class Main
         // ABSTRACT CLASS + INHERITANCE DEMO
         // ==========================================
 
-        RawMaterial corn = new SolidRawMaterial("Corn", 1001, 500, LocalDateTime.now().plusMonths(12),
+        RawMaterial corn = new SolidRawMaterial("Corn", 1001, 500,
                                                 15, 30);
 
-        RawMaterial oil = new LiquidRawMaterial("Vegetable Oil", 1002, 300, LocalDateTime.now().plusMonths(6),
+        RawMaterial oil = new LiquidRawMaterial("Vegetable Oil", 1002, 300,
                                                 10, 35);
 
-        RawMaterial peanuts = new SolidRawMaterial("Peanuts", 1003, 67, LocalDateTime.now().plusMonths(7),
+        RawMaterial peanuts = new SolidRawMaterial("Peanuts", 1003, 67,
                                                 10.67, 25);
 
-        RawMaterial honey = new LiquidRawMaterial("Honey", 1004, 5, LocalDateTime.now().plusYears(10),
+        RawMaterial honey = new LiquidRawMaterial("Honey", 1004, 5,
                                                   15, 30);
 
-        RawMaterial cocoa = new SolidRawMaterial("Cocoa", 1005, 120, LocalDateTime.now().plusMonths(8),
+        RawMaterial cocoa = new SolidRawMaterial("Cocoa", 1005, 120,
                                                 10.67, 25);
 
-        RawMaterial amba = new LiquidRawMaterial("amba", 1006, 5, LocalDateTime.now().plusYears(10),
+        RawMaterial amba = new LiquidRawMaterial("amba", 1006, 5,
                 15, 1000);
 
 

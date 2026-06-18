@@ -16,14 +16,8 @@ public class Product implements Valuable
     private int serialNumber;
     private LinkedList rawMaterials;
     private StackAsList batches;
-    /**
-     * Full constructor for a new Product
-     * @param name              The name of the product.
-     * @param productionCost    The base cost to produce the item.
-     * @param expiryDate        The expiration date.
-     * @param weight            The weight of the product in kg.
-     * @param initialMaterials  An initial list of raw materials.
-     */
+
+
     public Product(String name, double productionCost, LocalDateTime expiryDate, double weight, RawMaterial[] initialMaterials,int serialNumber) // full constructor
     {
         this.name = name;
@@ -45,13 +39,8 @@ public class Product implements Valuable
         }
     }
 
-    /**
-     * Minimal constructor for a new Product.
-     * @param name           The name of the product.
-     * @param productionCost The base cost to produce the item.
-     * @param weight         The weight of the product in kg.
-     */
-    public Product(String name, double productionCost, double weight)
+
+    public Product(String name, double productionCost, double weight) //constructor
     {
         this.name = name;
         this.productionCost = productionCost;
@@ -61,18 +50,12 @@ public class Product implements Valuable
         this.rawMaterials = new LinkedList(); // inits an empty list
         this.batches = new StackAsList(); //inits empty batch stack
     }
-    /**
-     * Checks if the current product has passed its expiry date.
-     * @return true if expired, false otherwise.
-     */
-    public boolean isExpired()
+
+    public boolean isExpired() //checks if the product is expired
     {
         return LocalDateTime.now().isAfter((this.expiryDate));
     }
-    /**
-     * Updates the weight of the product.
-     * @param newWeight The new weight (must be positive).
-     */
+
     public void updateWeight(double newWeight)
     {
         if(newWeight > 0)
@@ -80,15 +63,14 @@ public class Product implements Valuable
         else
             System.out.println("Error: weight must be greater than zero.");
     }
-    /**
-     * Adds a raw material to the product composition.
-     * @param material The material to add.
-     */
+
     public void addRawMaterial(RawMaterial material)
     {
         if(material != null)
             this.rawMaterials.addLast(material);
     }
+
+    // Getters & Setters
 
     public String getName()
     {
@@ -133,6 +115,23 @@ public class Product implements Valuable
         return rawMaterials;
     }
 
+    public double getBasePrice()
+    {
+        return this.getProductionCost();
+    }
+
+    public int getSerialNumber()
+    {
+        return this.serialNumber;
+    }
+
+    public void setSerialNumber(int serialNumber)
+    {
+        this.serialNumber = serialNumber;
+    }
+
+
+
     public boolean  addBatch(Batch batch) // add batches according to batch expiry dates
     {
         if(batch == null)
@@ -143,7 +142,7 @@ public class Product implements Valuable
         int amountNeeded = batch.getQuantity();
         LinkedNode currentMaterialNode = this.rawMaterials.getFirst();
 
-
+        //checks if there are enough RawMaterials for the batch
         while (currentMaterialNode != null)
         {
             RawMaterial rawMa = (RawMaterial) currentMaterialNode.getData();
@@ -155,7 +154,7 @@ public class Product implements Valuable
             }
             currentMaterialNode = currentMaterialNode.getNext();
         }
-
+        //if there are enough RawMaterials it updates the amount of each RawMaterial in the stock
         currentMaterialNode = this.rawMaterials.getFirst();
         while(currentMaterialNode != null)
         {
@@ -166,6 +165,7 @@ public class Product implements Valuable
 
         StackAsList temp = new StackAsList();
 
+        //reorder the Batches in the stack according to the batch date
         while(!batches.isEmpty())
         {
             Batch current = (Batch)batches.peek();
@@ -194,8 +194,7 @@ public class Product implements Valuable
     {
         return getTotalStock() >= amount;
     }
-    // Removes the requested quantity from inventory, starting from the oldest batch.
-    public void sellFromStock(int amount)
+    public void sellFromStock(int amount)   // Removes the requested quantity from inventory, starting from the oldest batch.
     {
         if(amount <= 0)
         {
@@ -279,22 +278,6 @@ public class Product implements Valuable
     public double calcFinalValue()
     {
         return this.productionCost * (1 + Valuable.TAX_PERCENT);
-    }
-
-    public double getBasePrice()
-    {
-        return this.getProductionCost();
-    }
-
-
-    public int getSerialNumber()
-    {
-        return this.serialNumber;
-    }
-
-    public void setSerialNumber(int serialNumber)
-    {
-        this.serialNumber = serialNumber;
     }
 
 }

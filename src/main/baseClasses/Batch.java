@@ -7,11 +7,13 @@ public class Batch
     private int quantity; // amount of products made in a daily batch
     private LocalDateTime expiryDate;
 
-    public Batch(int quantity, LocalDateTime expiryDate)
+    public Batch(int quantity, LocalDateTime expiryDate)    //constructor
     {
         this.quantity = quantity;
         this.expiryDate = expiryDate;
     }
+
+    // Getters & Setters
 
     public int getQuantity()
     {

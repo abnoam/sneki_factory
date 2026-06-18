@@ -6,11 +6,13 @@ public class SolidRawMaterial extends RawMaterial
 {
     private double weightInKg;
 
-    public SolidRawMaterial(String name, int serialNumber, double quantityInStock, LocalDateTime expirationDate, double purchasePrice, double weightInKg)
+    public SolidRawMaterial(String name, int serialNumber, double quantityInStock, double purchasePrice, double weightInKg)   //constructor
     {
-        super(name, serialNumber,quantityInStock,expirationDate,purchasePrice);
+        super(name, serialNumber,quantityInStock,purchasePrice);
         this.weightInKg = weightInKg;
     }
+
+    // Getters & Setters
 
     public double getWeightInKg(){
         return weightInKg;

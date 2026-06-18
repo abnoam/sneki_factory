@@ -10,13 +10,7 @@ public class Order {
     private LinkedList productsList;
     private int orderID;
 
-    /**
-     * Constructs a new main.baseClasses.Order instance.
-     * @param client The client who placed the order.
-     * @param orderDate The date the order was created.
-     * @param orderID id of the order.
-     */
-    public Order(Client client, LocalDateTime orderDate, int orderID)
+    public Order(Client client, LocalDateTime orderDate, int orderID)   //constructor
     {
         this.client = client;
         this.orderDate = orderDate;
@@ -25,11 +19,8 @@ public class Order {
 
     }
 
-    /**
-     * Adds a single product to the order.
-     * @param product The product to be added.
-     */
-    public void addProduct(Product product,int quantity)
+
+    public void addProduct(Product product,int quantity)    //adds product to the order
     {
         if(product != null && quantity > 0)
         {
@@ -41,11 +32,7 @@ public class Order {
         }
     }
 
-    /**
-     * Generates and prints a detailed invoice.
-     * Calculates the subtotal, applies tax, and displays the total amount.
-     */
-    public void generateInvoice()
+    public void generateInvoice()   //prints invoice of the processed order
     {
        LocalDateTime date = this.getOrderDate();
        System.out.println("========= INVOICE =========");
@@ -83,6 +70,9 @@ public class Order {
         System.out.println("===========================");
     }
 
+    // Getters & Setters
+
+
     public int getOrderId()
     {
         return orderID;
@@ -116,10 +106,8 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    /**
-     * Prints order summary (ID, client, item count, date)
-     * and lists all products in the order.
-     */
+
+
     public void printOrderDetails()
     {
         LocalDateTime date = this.getOrderDate();
@@ -133,19 +121,17 @@ public class Order {
                 " | Date: " + date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear() + " " + hourStr + ":" + minuteStr);
 
         System.out.println("Products List:");
-        if (productsList != null) {
+        if (productsList != null)
+        {
             LinkedNode current = productsList.getFirst();
-            while (current != null) {
+            while (current != null)
+            {
                 System.out.println(current.getData().toString());
                 current = current.getNext();
             }
         }
     }
 
-    /**
-     * Returns a string representation of the order,
-     * including ID, customer name, item count, and date.
-     */
     public String toString()
     {
         LocalDateTime date = this.getOrderDate();
@@ -160,7 +146,4 @@ public class Order {
                                                                                             + hourStr + ":"
                                                                                             + minuteStr;
     }
-
-   // public void
-
 }

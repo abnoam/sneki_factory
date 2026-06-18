@@ -7,16 +7,14 @@ public abstract class RawMaterial implements Valuable
     private String name;
     private int serialNumber;
     private double quantityInStock;
-    private LocalDateTime expirationDate;
     private double purchasePrice;
 
 
-    public RawMaterial(String name, int serialNumber, double quantityInStock,LocalDateTime expirationDate, double purchasePrice)      //full constructor
+    public RawMaterial(String name, int serialNumber, double quantityInStock, double purchasePrice)      //constructor
     {
         this.name = name;
         this.serialNumber = serialNumber;
         this.quantityInStock = quantityInStock;
-        this.expirationDate = expirationDate;
         this.purchasePrice = purchasePrice;
     }
 
@@ -38,19 +36,24 @@ public abstract class RawMaterial implements Valuable
         return true;
     }
 
+    public void addAmount(double amount)
+    {
+        if (amount <= 0)
+        {
+            System.out.println("Amount must be positive");
+            return;
+        }
+        setQuantityInStock(getQuantityInStock() + amount);
+    }
+
 
     public double checkStock()          //checks stock
     {
         return quantityInStock;
     }
 
-    public boolean isExpired()      //checks expiration date
-    {
-        return expirationDate.isBefore(LocalDateTime.now());
-    }
 
     //implementing valuable functions
-     //* שווי חומר הגלם = מחיר רכש * כמות במלאי
 
     public double calcFinalValue()      //calculate price of ALL units in stock
     {
@@ -63,6 +66,7 @@ public abstract class RawMaterial implements Valuable
     }
 
     // Getters & Setters
+
     public String getName(){
         return name;
     }
@@ -91,16 +95,6 @@ public abstract class RawMaterial implements Valuable
         this.quantityInStock = quantityInStock;
     }
 
-    public LocalDateTime getExpirationDate()
-    {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(LocalDateTime expirationDate)
-    {
-        this.expirationDate = expirationDate;
-    }
-
     public double getPurchasePrice()
     {
         return purchasePrice;
@@ -111,28 +105,17 @@ public abstract class RawMaterial implements Valuable
         this.purchasePrice = purchasePrice;
     }
 
-    public int getTreeID()
+    public int getID()
     {
         return this.getSerialNumber();
     }
 
     public String toString()
     {
-        LocalDateTime date = this.getExpirationDate();
-
-        String minuteStr = (date.getMinute() < 10 ? "0" : "") + date.getMinute();
-        String hourStr = (date.getHour() < 10 ? "0" : "") + date.getHour();
-
         return
                 "Name: " + name +
                 " | Serial Number: " + serialNumber +
                 " | Quantity In Stock: " + quantityInStock +
-                " | Expiration Date: " + date.getDayOfMonth() + "/"
-                                    + date.getMonthValue() + "/"
-                                    + date.getYear() + " "
-                                    + hourStr + ":"
-                                    + minuteStr +
-                " | Purchase Price: " + purchasePrice + " " + Valuable.CURRENCY +
-                " | Expired: " + isExpired();
+                " | Purchase Price: " + purchasePrice + " " + Valuable.CURRENCY;
     }
 }

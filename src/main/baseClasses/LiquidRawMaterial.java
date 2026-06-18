@@ -5,12 +5,14 @@ public class LiquidRawMaterial extends RawMaterial
 {
     private double volumeInLiters;
 
-    public LiquidRawMaterial(String name, int serialNumber,double quantityInStock, LocalDateTime expirationDate,double purchasePrice,double volumeInLiters)
+    public LiquidRawMaterial(String name, int serialNumber,double quantityInStock, double purchasePrice,double volumeInLiters) //constructor
     {
-        super(name, serialNumber,quantityInStock,expirationDate,purchasePrice);
+        super(name, serialNumber,quantityInStock,purchasePrice);
         this.volumeInLiters = volumeInLiters;
 
     }
+
+    // Getters & Setters
 
     public double getVolumeInLiters()
     {
